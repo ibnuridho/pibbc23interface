@@ -1,18 +1,8 @@
 <?php
-//CONNECTION DB
-function dbConn(){
-	$servername = "localhost";
-	$username = "root";
-	$password = "";
-	$dbname = "project2";
-	$conn = new mysqli($servername, $username, $password, $dbname);
-
-	return $conn;
-}
-//CONNECTION DB
+include('lib/database.php');
 
 // READ XML
-$pib_xml_dir = $_SERVER['DOCUMENT_ROOT']."/interfacepabean/xml/pib/".date('Ymd');
+$pib_xml_dir = $_SERVER['DOCUMENT_ROOT']."/pibbc23interface/xml/pib/".date('Ymd');
 $filter = "/*.xml";
 $xmlFiles  = array_slice(glob($pib_xml_dir . $filter, GLOB_BRACE),0,1000);
 
@@ -313,16 +303,17 @@ foreach($xmlFiles as $file){
 // READ XML
 
 function insertRefernce($table, $arrData, $allField = false){
-	$conn = dbConn();
+	global $db;
 
     $arrData = array_change_key_case($arrData,CASE_UPPER);
     $arrData = array_map('trim', $arrData);
     $arrData = array_map('strtoupper', $arrData);
     $sqlTBL = 'SHOW FIELDS FROM ' . $table;
-    $datTBL = $conn->query($sqlTBL);
+    $datTBL = $db->query($sqlTBL);
     while($row = $datTBL->fetch_assoc()){
 	   	$arrTBL[] = $row;
 	}
+	// return arrTBL;
     $whrTBL = '';
     $data   = '';
     foreach ($arrTBL as $aTBL) {
@@ -377,9 +368,9 @@ function insertRefernce($table, $arrData, $allField = false){
         }
         #find key
         if ($aTBL['KEY'] == 'PRI') {
-            $whrTBL[$aTBL['FIELD']] = $arrData[$aTBL['FIELD']];//$data[$aTBL['FIELD']];
+            $whrTBL[$aTBL['FIELD']] = $arrData[$aTBL['FIELD']];
             if($trueData){
-                $whrTBL[$aTBL['FIELD']] = $data[$aTBL['FIELD']];//$data[$aTBL['FIELD']];
+                $whrTBL[$aTBL['FIELD']] = $data[$aTBL['FIELD']];
             }
         }
 
@@ -389,14 +380,14 @@ function insertRefernce($table, $arrData, $allField = false){
     $dataWhere = implode(" AND ", $dataWhere);
 
     $sqlCek = "SELECT * FROM $table WHERE " . $dataWhere;
-    $datCek = $conn->query($sqlCek);
+    $datCek = $db->query($sqlCek);
 
     if ($datCek->num_rows == 0) {
     	$columns = implode(", ",array_keys($data));
     	$values  = implode(", ", array_values($data));
 
     	$sqlIns = "INSERT INTO $table ($columns) VALUES ($values)";
-    	$exec = $conn->query($sqlIns);
+    	$exec = $db->query($sqlIns);
         
     } else {
     	// $data = array_diff($data, $whrTBL);
@@ -404,7 +395,7 @@ function insertRefernce($table, $arrData, $allField = false){
     	$dataUpd = implode(", ", $dataUpd);
 
     	$sqlUpd = "UPDATE $table SET $dataUpd WHERE " . $dataWhere;
-    	$exec = $conn->query($sqlUpd);
+    	$exec = $db->query($sqlUpd);
     	
     }
 
@@ -414,3 +405,5 @@ function insertRefernce($table, $arrData, $allField = false){
     	return [$table => false];
     }
 }
+
+$db->close();
