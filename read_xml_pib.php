@@ -24,7 +24,7 @@ foreach($xmlFiles as $file){
 	$xmlFilePath   	= realpath($file);
 	$xmlContent		= file_get_contents($xmlFilePath);
 	$xmlArr		 	= simplexml_load_string($xmlContent);
-
+	print_r($xmlArr); die();
 	foreach ($xmlArr->HEADER as $xmlHeader) {
 		$dataHeader = [
 			'KODE_TRADER' => $kode_trader = ($xmlHeader->KODE_TRADER) ? (string)$xmlHeader->KODE_TRADER : "0",

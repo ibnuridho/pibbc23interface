@@ -21,11 +21,11 @@ foreach($xmlFiles as $file){
 	$xmlFilePath   	= realpath($file);
 	$xmlContent		= file_get_contents($xmlFilePath);
 	$xmlArr		 	= simplexml_load_string($xmlContent);
-
+	
 	foreach ($xmlArr->HEADER as $xmlHeader) {
 		$dataHeader = [
 			'KODE_TRADER' => $kode_trader = ($xmlHeader->KODE_TRADER) ? (string)$xmlHeader->KODE_TRADER : "0",
-			'CAR' => ($xmlHeader->CAR) ? (string)$xmlHeader->CAR : "-",
+			'CAR' => $car = ($xmlHeader->CAR) ? (string)$xmlHeader->CAR : "-",
 			'KDKPBC' => ($xmlHeader->KDKPBC) ? (string)$xmlHeader->KDKPBC : "",
 			'TUJUAN' => ($xmlHeader->TUJUAN) ? (string)$xmlHeader->TUJUAN : "",
 			'PASOKNAMA' => ($xmlHeader->PASOKNAMA) ? (string)$xmlHeader->PASOKNAMA : "",
@@ -119,27 +119,27 @@ foreach($xmlFiles as $file){
 			$dataItem = [
 				'KODE_TRADER' => $kode_trader,
 				'CAR'	=> $car,
-				'SERIAL' => ($xmlItem->SERIAL) ? (string) : "",
-				'JNSBARANGDTL' => ($xmlItem->JNSBARANGDTL) ? (string) : "",
-				'NOHS' => ($xmlItem->NOHS) ? (string) : "",
-				'BRGURAI' => ($xmlItem->BRGURAI) ? (string) : "",
-				'MERK' => ($xmlItem->MERK) ? (string) : "",
-				'TIPE' => ($xmlItem->TIPE) ? (string) : "",
-				'UKURAN' => ($xmlItem->UKURAN) ? (string) : "",
-				'SPFLAIN' => ($xmlItem->SPFLAIN) ? (string) : "",
-				'KDBRG' => ($xmlItem->KDBRG) ? (string) : "",
-				'KEMASJN' => ($xmlItem->KEMASJN) ? (string) : "",
-				'KEMASJM' => ($xmlItem->KEMASJM) ? (string) : "",
-				'KDFASDTL' => ($xmlItem->KDFASDTL) ? (string) : "",
-				'BRGASAL' => ($xmlItem->BRGASAL) ? (string) : "",
-				'DNILINV' => ($xmlItem->DNILINV) ? (string) : "",
-				'DCIF' => ($xmlItem->DCIF) ? (string) : "",
-				'KDSAT' => ($xmlItem->KDSAT) ? (string) : "",
-				'JMLSAT' => ($xmlItem->JMLSAT) ? (string) : "",
-				'NETTODTL' => ($xmlItem->NETTODTL) ? (string) : "",
-				'HRGSAT' => ($xmlItem->HRGSAT) ? (string) : "",
-				'KDSKEMATARIF' => ($xmlItem->KDSKEMATARIF) ? (string) : "",
-				'STATUS' => ($xmlItem->STATUS) ? (string) : "",
+				'SERIAL' => ($xmlItem->SERIAL) ? (string)$xmlItem->SERIAL : "",
+				'JNSBARANGDTL' => ($xmlItem->JNSBARANGDTL) ? (string)$xmlItem->JNSBARANGDTL : "",
+				'NOHS' => ($xmlItem->NOHS) ? (string)$xmlItem->NOHS : "",
+				'BRGURAI' => ($xmlItem->BRGURAI) ? (string)$xmlItem->BRGURAI : "",
+				'MERK' => ($xmlItem->MERK) ? (string)$xmlItem->MERK : "",
+				'TIPE' => ($xmlItem->TIPE) ? (string)$xmlItem->TIPE : "",
+				'UKURAN' => ($xmlItem->UKURAN) ? (string)$xmlItem->UKURAN : "",
+				'SPFLAIN' => ($xmlItem->SPFLAIN) ? (string)$xmlItem->SPFLAIN : "",
+				'KDBRG' => ($xmlItem->KDBRG) ? (string)$xmlItem->KDBRG : "",
+				'KEMASJN' => ($xmlItem->KEMASJN) ? (string)$xmlItem->KEMASJN : "",
+				'KEMASJM' => ($xmlItem->KEMASJM) ? (string)$xmlItem->KEMASJM : "",
+				'KDFASDTL' => ($xmlItem->KDFASDTL) ? (string)$xmlItem->KDFASDTL : "",
+				'BRGASAL' => ($xmlItem->BRGASAL) ? (string)$xmlItem->BRGASAL : "",
+				'DNILINV' => ($xmlItem->DNILINV) ? (string)$xmlItem->DNILINV : "",
+				'DCIF' => ($xmlItem->DCIF) ? (string)$xmlItem->DCIF : "",
+				'KDSAT' => ($xmlItem->KDSAT) ? (string)$xmlItem->KDSAT : "",
+				'JMLSAT' => ($xmlItem->JMLSAT) ? (string)$xmlItem->JMLSAT : "",
+				'NETTODTL' => ($xmlItem->NETTODTL) ? (string)$xmlItem->NETTODTL : "",
+				'HRGSAT' => ($xmlItem->HRGSAT) ? (string)$xmlItem->HRGSAT : "",
+				'KDSKEMATARIF' => ($xmlItem->KDSKEMATARIF) ? (string)$xmlItem->KDSKEMATARIF : "",
+				'STATUS' => ($xmlItem->STATUS) ? (string)$xmlItem->STATUS : "",
 			];
 			$insertData[] = insertRefernce('t_bc23dtl', $dataItem);
 		}
@@ -240,6 +240,8 @@ foreach($xmlFiles as $file){
 			$insertData[] = insertRefernce('t_bc23trf', $dataTrf);
 		}
 	}
+
+	print_r($insertData);
 }
 
 $db->close();
