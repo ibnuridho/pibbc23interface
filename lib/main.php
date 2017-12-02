@@ -20,11 +20,11 @@ function insertRefernce($table, $arrData, $allField = false){
         $trueData = false;
         if ($aTBL['EXTRA'] != 'AUTO_INCREMENT') {
             if($allField){
-                $data[$aTBL['FIELD']] = "'" . $arrData[$aTBL['FIELD']] . "'";
+                $data[$aTBL['FIELD']] = "'" . str_replace("'", "\'", $arrData[$aTBL['FIELD']]) . "'";
                 $trueData = true;
             }else{
                 if(isset($arrData[$aTBL['FIELD']])){
-                    $data[$aTBL['FIELD']] = "'" . $arrData[$aTBL['FIELD']] . "'";
+                    $data[$aTBL['FIELD']] = "'" . str_replace("'", "\'", $arrData[$aTBL['FIELD']]) . "'";
                     $trueData = true;
                 }
             }
@@ -59,7 +59,12 @@ function insertRefernce($table, $arrData, $allField = false){
                         $data[$aTBL['FIELD']] = floatval($data[$aTBL['FIELD']]);
                         break;
                     case'INT':
-                        $data[$aTBL['FIELD']] = str_replace(',', '', $arrData[$aTBL['FIELD']]);
+                        if($arrData[$aTBL['FIELD']] == ''){
+                            $data[$aTBL['FIELD']] = 0;
+                        }else{
+                            $data[$aTBL['FIELD']] = str_replace(',', '', $arrData[$aTBL['FIELD']]);
+                        }
+                            
                         break;
                 }
             }
@@ -79,7 +84,6 @@ function insertRefernce($table, $arrData, $allField = false){
 
     $sqlCek = "SELECT * FROM $table WHERE " . $dataWhere;
     $datCek = $db->query($sqlCek);
-
     if ($datCek->num_rows == 0) {
         $columns = implode(", ",array_keys($data));
         $values  = implode(", ", array_values($data));
