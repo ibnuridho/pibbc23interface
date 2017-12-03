@@ -107,3 +107,14 @@ function insertRefernce($table, $arrData, $allField = false){
         return [$table => false];
     }
 }
+
+function set_logs($jns_dok, $car, $log_desc, $log_by){
+    $data = [
+        'JNS_DOK' => $jns_dok, 
+        'CAR' => $car, 
+        'LOG_DESC' => $log_desc, 
+        'LOG_BY' => $log_by
+    ];
+
+    $insertData = insertRefernce('t_dok_log', $data);
+}
