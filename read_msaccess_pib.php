@@ -20,6 +20,7 @@ try {
 		];
 		
 	    $insertData[] = insertRefernce('t_bc20res', $data);
+	    set_logs('RESPIB', $row['CAR'], 'Load Response', 0);
 	}
 	
 	print_r($insertData);
