@@ -27,7 +27,7 @@ foreach($xmlFiles as $file){
 	foreach ($xmlArr->HEADER as $xmlHeader) {
 		$dataHeader = [
 			'KODE_TRADER' => $kode_trader = ($xmlHeader->KODE_TRADER) ? (string)$xmlHeader->KODE_TRADER : "0",
-			'CAR' => $car = ($xmlHeader->CAR) ? (string)$xmlHeader->CAR : "-",
+			'CAR' => $car = ($xmlHeader->CAR) ? (string)$xmlHeader->CAR : date("Ymdhis"),
 			'KDKPBC' => ($xmlHeader->KDKPBC) ? (string)$xmlHeader->KDKPBC : "",
 			'TUJUAN' => ($xmlHeader->TUJUAN) ? (string)$xmlHeader->TUJUAN : "",
 			'PASOKNAMA' => ($xmlHeader->PASOKNAMA) ? (string)$xmlHeader->PASOKNAMA : "",
