@@ -3,7 +3,7 @@ include('lib/database.php');
 include('lib/main.php');
 
 // READ XML
-$bc23_xml_dir = __DIR__."/xml/bc23/".date('Ymd');
+$bc23_xml_dir = __DIR__ . DIRECTORY_SEPARATOR . "FROM" . DIRECTORY_SEPARATOR .date('Ymd');
 $filter = "/*.xml";
 $xmlFiles  = array_slice(glob($bc23_xml_dir . $filter, GLOB_BRACE),0,1000);
 
@@ -22,6 +22,8 @@ foreach($xmlFiles as $file){
 	$xmlContent		= file_get_contents($xmlFilePath);
 	$xmlArr		 	= simplexml_load_string($xmlContent);
 	
+	if($xmlArr->DOCTYPE !== "C6") exit();
+
 	foreach ($xmlArr->HEADER as $xmlHeader) {
 		$dataHeader = [
 			'KODE_TRADER' => $kode_trader = ($xmlHeader->KODE_TRADER) ? (string)$xmlHeader->KODE_TRADER : "0",

@@ -3,10 +3,10 @@ include('lib/database.php');
 include('lib/main.php');
 
 // READ XML
-$pib_xml_dir = __DIR__."/xml/pib/".date('Ymd');
+$pib_xml_dir = __DIR__ . DIRECTORY_SEPARATOR . "FROM" . DIRECTORY_SEPARATOR .date('Ymd');
 $filter = "/*.xml";
 $xmlFiles  = array_slice(glob($pib_xml_dir . $filter, GLOB_BRACE),0,1000);
-print_r($xmlFiles); die();
+// print_r($xmlFiles); die();
 
 foreach($xmlFiles as $file){
 	isset($dataHeader);
@@ -25,11 +25,13 @@ foreach($xmlFiles as $file){
 	$xmlFilePath   	= realpath($file);
 	$xmlContent		= file_get_contents($xmlFilePath);
 	$xmlArr		 	= simplexml_load_string($xmlContent);
-	print_r($xmlArr); die();
+	// print_r($xmlArr); die();
+	if($xmlArr->DOCTYPE !== "C5") exit();
+	
 	foreach ($xmlArr->HEADER as $xmlHeader) {
 		$dataHeader = [
 			'KODE_TRADER' => $kode_trader = ($xmlHeader->KODE_TRADER) ? (string)$xmlHeader->KODE_TRADER : "0",
-			'CAR'	=> $car = ($xmlHeader->CAR) ? (string)$xmlHeader->CAR : "-",
+			'CAR'	=> $car = ($xmlHeader->CAR) ? (string)$xmlHeader->CAR : date("Ymdhis"),
 			'KDKPBC'	=> ($xmlHeader->KDKPBC) ? (string)$xmlHeader->KDKPBC : "-",
 			'JNPIB'	=> ($xmlHeader->JNPIB) ? (string)$xmlHeader->JNPIB : "-",
 			'JNIMP'	=> ($xmlHeader->JNIMP) ? (string)$xmlHeader->JNIMP : "-",
@@ -96,9 +98,11 @@ foreach($xmlFiles as $file){
 			'KOTA_TTD'	=> ($xmlHeader->KOTA_TTD) ? (string)$xmlHeader->KOTA_TTD : "-",
 			'TANGGAL_TTD'	=> ($xmlHeader->TANGGAL_TTD) ? (string)$xmlHeader->TANGGAL_TTD : "-",
 		];	
+		print_r($dataHeader); die();
 		$insertData[] = insertRefernce('t_bc20hdr', $dataHeader);
 	}
 
+	die();
 
 	foreach ($xmlArr->DETAIL->DOCUMENTS as $xmlDocs) {
 		foreach ($xmlDocs->DOCUMENT as $xmlDoc) {
