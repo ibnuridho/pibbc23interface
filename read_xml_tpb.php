@@ -3,7 +3,7 @@ include('lib/database.php');
 include('lib/main.php');
 
 // READ XML
-$bc23_xml_dir = $_SERVER['DOCUMENT_ROOT']."/pibbc23interface/xml/bc23/".date('Ymd');
+$bc23_xml_dir = __DIR__."/xml/bc23/".date('Ymd');
 $filter = "/*.xml";
 $xmlFiles  = array_slice(glob($bc23_xml_dir . $filter, GLOB_BRACE),0,1000);
 

@@ -3,9 +3,10 @@ include('lib/database.php');
 include('lib/main.php');
 
 // READ XML
-$pib_xml_dir = $_SERVER['DOCUMENT_ROOT']."/pibbc23interface/xml/pib/".date('Ymd');
+$pib_xml_dir = __DIR__."/xml/pib/".date('Ymd');
 $filter = "/*.xml";
 $xmlFiles  = array_slice(glob($pib_xml_dir . $filter, GLOB_BRACE),0,1000);
+print_r($xmlFiles); die();
 
 foreach($xmlFiles as $file){
 	isset($dataHeader);
