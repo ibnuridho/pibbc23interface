@@ -11,9 +11,9 @@ function insertRefernce($table, $arrData, $allField = false){
     while($row = $datTBL->fetch_assoc()){
         $arrTBL[] = $row;
     }
-    // return arrTBL;
-    $whrTBL = '';
-    $data   = '';
+    // return $arrTBL;
+    $whrTBL = [];
+    $data   = [];
     foreach ($arrTBL as $aTBL) {
         $aTBL = array_change_key_case($aTBL, CASE_UPPER);
         $aTBL = array_map('strtoupper' , $aTBL);
@@ -25,6 +25,7 @@ function insertRefernce($table, $arrData, $allField = false){
             }else{
                 if(isset($arrData[$aTBL['FIELD']])){
                     $data[$aTBL['FIELD']] = "'" . str_replace("'", "\'", $arrData[$aTBL['FIELD']]) . "'";
+                    // return $data[$aTBL['FIELD']];
                     $trueData = true;
                 }
             }
