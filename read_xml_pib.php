@@ -25,7 +25,7 @@ foreach($xmlFiles as $file){
 	$xmlFilePath   	= realpath($file);
 	$xmlContent		= file_get_contents($xmlFilePath);
 	$xmlArr		 	= simplexml_load_string($xmlContent);
-	// print_r($xmlArr); die();
+	// print_r($xmlArr->DOCTYPE); die();
 	if($xmlArr->DOCTYPE == "C5") {
 		foreach ($xmlArr->HEADER as $xmlHeader) {
 			$car = (string)($xmlHeader->CAR);
@@ -305,7 +305,7 @@ foreach($xmlFiles as $file){
 			}
 		}
 
-		print_r($insertData);
+		print_r(json_encode($insertData));
 
 	}else{
 		
