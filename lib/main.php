@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE);
+libxml_use_internal_errors(true);
 
 function insertRefernce($table, $arrData, $allField = false){
     global $db;
@@ -98,10 +100,11 @@ function insertRefernce($table, $arrData, $allField = false){
         $dataUpd = implode(", ", $dataUpd);
 
         $sqlUpd = "UPDATE $table SET $dataUpd WHERE " . $dataWhere;
+        // return $sqlUpd;
         $exec = $db->query($sqlUpd);
         
     }
-
+    
     if($exec){
         return [$table => true];
     }else{
