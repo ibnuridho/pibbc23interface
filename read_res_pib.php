@@ -1,9 +1,8 @@
 <?php
-error_reporting(ALL);
 include('lib/database.php');
 include('lib/main.php');
 
-$dbName = $_SERVER["DOCUMENT_ROOT"] . "/pibbc23interface/msaccess/dbPIB.mdb";
+$dbName = __DIR__ . DIRECTORY_SEPARATOR . "msaccess/dbPIB.mdb";
 if (!file_exists($dbName)) {
     die("Could not find database file.");
 }
