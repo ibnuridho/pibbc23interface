@@ -127,3 +127,32 @@ function fixLen($str, $len, $chr = ' ', $alg = STR_PAD_RIGHT) {
     $hasil = str_pad(substr($str, 0, $len), $len, $chr, $alg);
     return $hasil;
 }
+
+function getResult($sql)
+{
+    global $db;
+    
+    $result = $db->query($sql);
+    $data = [];
+
+    if($result->num_rows > 0)
+    {
+        while ($row = $result->fetch_assoc())
+        {
+            $data[] = $row;
+        }   
+    }
+    
+    return $data;
+}
+
+function findArr2Str($str,$arr){
+    $hasil = false;
+    foreach($arr as $a){
+        if(strstr($str,$a)){
+            $hasil = true;
+            break;
+        }
+    }
+    return $hasil;
+}
