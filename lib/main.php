@@ -122,3 +122,8 @@ function set_logs($jns_dok, $car, $log_desc, $log_by){
 
     $insertData = insertRefernce('t_dok_log', $data);
 }
+
+function fixLen($str, $len, $chr = ' ', $alg = STR_PAD_RIGHT) {
+    $hasil = str_pad(substr($str, 0, $len), $len, $chr, $alg);
+    return $hasil;
+}
