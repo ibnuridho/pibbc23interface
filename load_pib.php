@@ -36,8 +36,10 @@ try {
 			// $ins_hdr_p = $dbA->prepare($sqlMA_Hdr);
 			// $ins_hdr = $ins_hdr_p->execute();
 			$ins_hdr = true;
+			$status_ins = array();
 
 			if($ins_hdr){
+
 				//Update Nomor
 				$new_number = (int)$last_number["Nomor"] + 1;
 				$sqlMA_UpdNum = "UPDATE tblNomor SET Nomor = " . $new_number;
@@ -47,52 +49,217 @@ try {
 				//Insert Detail
 				$sqlDtl = "SELECT * FROM t_bc20dtl WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
 				$dataDtl = $db->query($sqlDtl);
-				while($rowDtl = $dataDtl->fetch_assoc()){
 
-					$sqlMA_Dtl = "INSERT INTO tblPibDtl (CAR, Serial, NoHs, SeriTrp, BrgUrai, Merk, Tipe, SpfLain, BrgAsal, DnilInv, DCif, KdSat, JmlSat, KemasJn, KemasJm, SatBmJm, SatCukJm, NettoDtl, FlBarangBaru, FlLartas, SpekTarif, DNilCuk, JmPC, SaldoAwalPC, SaldoAkhirPC) 
-					VALUES ('" . $mdb_Car . "', " . $rowDtl["SERIAL"] . ", '" . $rowDtl["NOHS"] . "', " . $rowDtl["SERITRP"] . ", '" . $rowDtl["BRGURAI"] . "', '" . $rowDtl["MERK"] . "', '" . $rowDtl["TIPE"] . "', '" . $rowDtl["SPFLAIN"] . "', '" . $rowDtl["BRGASAL"] . "', " . $rowDtl["DNILINV"] . ", " . $rowDtl["DCIF"] . ", '" . $rowDtl["KDSAT"] . "', " . $rowDtl["JMLSAT"] . ", '" . $rowDtl["KEMASJN"] . "', " . $rowDtl["KEMASJM"] . ", " . $rowDtl["SATBMJM"] . ", " . $rowDtl["SATCUKJM"] . ", " . $rowDtl["NETTODTL"] . ", '" . $rowDtl["FLBARANGBARU"] . "', '" . $rowDtl["FLLARTAS"] . "', '" . $rowDtl["SPEKTARIF"] . "', " . $rowDtl["DNILCUK"] . ", " . $rowDtl["JMPC"] . ", " . $rowDtl["SALDOAWALPC"] . ", " . $rowDtl["SALDOAKHIRPC"] . " ); ";
+				if($dataDtl->num_rows > 0){
+					while($rowDtl = $dataDtl->fetch_assoc()){
 
+						$sqlMA_Dtl = "INSERT INTO tblPibDtl (CAR, Serial, NoHs, SeriTrp, BrgUrai, Merk, Tipe, SpfLain, BrgAsal, DnilInv, DCif, KdSat, JmlSat, KemasJn, KemasJm, SatBmJm, SatCukJm, NettoDtl, FlBarangBaru, FlLartas, SpekTarif, DNilCuk, JmPC, SaldoAwalPC, SaldoAkhirPC) 
+						VALUES ('" . $mdb_Car . "', " . $rowDtl["SERIAL"] . ", '" . $rowDtl["NOHS"] . "', " . $rowDtl["SERITRP"] . ", '" . $rowDtl["BRGURAI"] . "', '" . $rowDtl["MERK"] . "', '" . $rowDtl["TIPE"] . "', '" . $rowDtl["SPFLAIN"] . "', '" . $rowDtl["BRGASAL"] . "', " . $rowDtl["DNILINV"] . ", " . $rowDtl["DCIF"] . ", '" . $rowDtl["KDSAT"] . "', " . $rowDtl["JMLSAT"] . ", '" . $rowDtl["KEMASJN"] . "', " . $rowDtl["KEMASJM"] . ", " . $rowDtl["SATBMJM"] . ", " . $rowDtl["SATCUKJM"] . ", " . $rowDtl["NETTODTL"] . ", '" . $rowDtl["FLBARANGBARU"] . "', '" . $rowDtl["FLLARTAS"] . "', '" . $rowDtl["SPEKTARIF"] . "', " . $rowDtl["DNILCUK"] . ", " . $rowDtl["JMPC"] . ", " . $rowDtl["SALDOAWALPC"] . ", " . $rowDtl["SALDOAKHIRPC"] . " ); ";
+
+					}
+
+					$status_ins['t_bc20dtl'] = "1";
+
+				}else{
+					$status_ins['t_bc20dtl'] = "0";
 				}
 
 				//Insert Dokumen
 				$sqlDok = "SELECT * FROM t_bc20dok WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
 				$dataDok = $db->query($sqlDok);
-				while($rowDok = $dataDok->fetch_assoc()){
 
-					$sqlMA_Dok = "INSERT INTO tblPibDok (CAR, DokKd, DokNo, DokTg, DokInst, NoUrut, KdGroupDok) 
-					VALUES ('" . $mdb_Car . "', '" . $rowDok["DOKKD"] . "', '" . $rowDok["DOKNO"] . "', '" . $rowDok["DOKTG"] . "', '" . $rowDok["DOKINST"] . "', " . $rowDok["SERIDOK"] . ", '" . $rowDok["KDGROUPDOK"] . "'); ";
+				if($dataDok->num_rows > 0){
+					while($rowDok = $dataDok->fetch_assoc()){
 
+						$sqlMA_Dok = "INSERT INTO tblPibDok (CAR, DokKd, DokNo, DokTg, DokInst, NoUrut, KdGroupDok) 
+						VALUES ('" . $mdb_Car . "', '" . $rowDok["DOKKD"] . "', '" . $rowDok["DOKNO"] . "', '" . $rowDok["DOKTG"] . "', '" . $rowDok["DOKINST"] . "', " . $rowDok["SERIDOK"] . ", '" . $rowDok["KDGROUPDOK"] . "'); ";
+
+					}
+
+					$status_ins['t_bc20dok'] = "1";
+
+				}else{
+					$status_ins['t_bc20dok'] = "0";
 				}
 
 				//Insert Container
 				$sqlCon = "SELECT * FROM t_bc20Con WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
 				$dataCon = $db->query($sqlCon);
-				while($rowCon = $dataCon->fetch_assoc()){
 
-					$sqlMA_Con = "INSERT INTO tblPibCon (CAR, ContNo, ContUkur, ContTipe) 
-					VALUES ('" . $mdb_Car . "', '" . $rowCon["CONTNO"] . "', '" . $rowCon["CONTUKUR"] . "', '" . $rowCon["CONTTIPE"] . "'); ";
+				if($dataCon->num_rows > 0){
+					while($rowCon = $dataCon->fetch_assoc()){
 
+						$sqlMA_Con = "INSERT INTO tblPibCon (CAR, ContNo, ContUkur, ContTipe) 
+						VALUES ('" . $mdb_Car . "', '" . $rowCon["CONTNO"] . "', '" . $rowCon["CONTUKUR"] . "', '" . $rowCon["CONTTIPE"] . "'); ";
+
+					}
+
+					$status_ins['t_bc20Con'] = "1";
+
+				}else{
+					$status_ins['t_bc20Con'] = "0";
 				}
 
 				//Insert Detail Dokumen
 				$sqlDtlDok = "SELECT * FROM t_bc20dtldok WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
 				$dataDtlDok = $db->query($sqlDtlDok);
-				while($rowDtlDok = $dataDtlDok->fetch_assoc()){
 
-					$sqlMA_DtlDok = "INSERT INTO tblPibDtlDok (Car, Serial, KdFasDtl, NoUrut, DokKd, DokNo, DokTg, KdGroupDok) 
-					VALUES ('" . $mdb_Car . "', " . $rowDtlDok["SERIBRG"] . ", '" . $rowDtlDok["KDFASDTL"] . "', " . $rowDtlDok["SERIDOK"] . ", '" . $rowDtlDok["DOKKD"] . "', '" . $rowDtlDok["DOKNO"] . "', '" . $rowDtlDok["DOKTG"] . "', '" . $rowDtlDok["KDGROUPDOK"] . "') ";
+				if($dataDtlDok->num_rows > 0){ 
+					while($rowDtlDok = $dataDtlDok->fetch_assoc()){
 
+						$sqlMA_DtlDok = "INSERT INTO tblPibDtlDok (Car, Serial, KdFasDtl, NoUrut, DokKd, DokNo, DokTg, KdGroupDok) 
+						VALUES ('" . $mdb_Car . "', " . $rowDtlDok["SERIBRG"] . ", '" . $rowDtlDok["KDFASDTL"] . "', " . $rowDtlDok["SERIDOK"] . ", '" . $rowDtlDok["DOKKD"] . "', '" . $rowDtlDok["DOKNO"] . "', '" . $rowDtlDok["DOKTG"] . "', '" . $rowDtlDok["KDGROUPDOK"] . "') ";
+
+					}
+
+					$status_ins['t_bc20dtldok'] = "1";
+
+				}else{
+					$status_ins['t_bc20dtldok'] = "0";
 				}
 
-				//Insert Detail Fasilistas
+				//Insert Fasilistas
 				$sqlFas = "SELECT * FROM t_bc20fas WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
 				$dataFas = $db->query($sqlFas);
-				while($rowFas = $dataFas->fetch_assoc()){
 
-					$sqlMA_Fas = "INSERT INTO tblPibFas (Car, Serial, KdFasBM, FasBM, KdFasCuk, FasCuk, KdFasPpn, FasPpn, KdFasPph, FasPph, KdFasPbm, FasPbm, KdFasBMAD, FasBMAD, BMADS, KdFasBMTP, FasBMTP, BMTPS, KdFasBMIM, FasBMIM, BMIMS, KdFasBMPB, FasBMPB, BMPBS) 
-					VALUES ('". $rowFas["CAR"] ."', ". $rowFas["SERIBRG"] .", '". $rowFas["KDFASBM"] ."', ". $rowFas["FASBM"] .", '". $rowFas["KDFASCUK"] ."', ". $rowFas["FASCUK"] .", '". $rowFas["KDFASPPN"] ."', ". $rowFas["FASPPN"] .", '". $rowFas["KDFASPPH"] ."', ". $rowFas["FASPPH"] .", '". $rowFas["KDFASPBM"] ."', ". $rowFas["FASPBM"] .", '". $rowFas["KDFASBMAD"] ."', ". $rowFas["FASBMAD"] .", '". $rowFas["BMADS"] ."', '". $rowFas["KDFASBMTP"] ."', ". $rowFas["FASBMTP"] .", '". $rowFas["BMTPS"] ."', '". $rowFas["KDFASBMIM"] ."', ". $rowFas["FASBMIM"] .", '". $rowFas["BMIMS"] ."', '". $rowFas["KDFASBMPB"] ."', ". $rowFas["FASBMPB"] .", '". $rowFas["BMPBS"] ."') ";
+				if($dataFas->num_rows > 0){
+					while($rowFas = $dataFas->fetch_assoc()){
 
-					print_r($sqlMA_Fas); die();
+						$sqlMA_Fas = "INSERT INTO tblPibFas (Car, Serial, KdFasBM, FasBM, KdFasCuk, FasCuk, KdFasPpn, FasPpn, KdFasPph, FasPph, KdFasPbm, FasPbm, KdFasBMAD, FasBMAD, BMADS, KdFasBMTP, FasBMTP, BMTPS, KdFasBMIM, FasBMIM, BMIMS, KdFasBMPB, FasBMPB, BMPBS) 
+						VALUES ('". $rowFas["CAR"] ."', ". $rowFas["SERIBRG"] .", '". $rowFas["KDFASBM"] ."', ". $rowFas["FASBM"] .", '". $rowFas["KDFASCUK"] ."', ". $rowFas["FASCUK"] .", '". $rowFas["KDFASPPN"] ."', ". $rowFas["FASPPN"] .", '". $rowFas["KDFASPPH"] ."', ". $rowFas["FASPPH"] .", '". $rowFas["KDFASPBM"] ."', ". $rowFas["FASPBM"] .", '". $rowFas["KDFASBMAD"] ."', ". $rowFas["FASBMAD"] .", '". $rowFas["BMADS"] ."', '". $rowFas["KDFASBMTP"] ."', ". $rowFas["FASBMTP"] .", '". $rowFas["BMTPS"] ."', '". $rowFas["KDFASBMIM"] ."', ". $rowFas["FASBMIM"] .", '". $rowFas["BMIMS"] ."', '". $rowFas["KDFASBMPB"] ."', ". $rowFas["FASBMPB"] .", '". $rowFas["BMPBS"] ."') ";
+
+					}
+
+					$status_ins['t_bc20fas'] = "1";
+
+				}else{
+					$status_ins['t_bc20fas'] = "0";
+				}
+
+				//Insert Kemasan
+				$sqlKms = "SELECT * FROM t_bc20kms WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
+				$dataKms = $db->query($sqlKms);
+
+				if($dataKms->num_rows > 0){
+					while($rowKms = $dataKms->fetch_assoc()){
+
+						$sqlMA_Kms = "INSERT INTO tblPibKms (CAR, JnKemas, JmKemas, merkkemas) 
+						VALUES ('" . $mdb_Car . "', '" . $rowKms["JNKEMAS"] . "', " . $rowKms["JMKEMAS"] . ", '" . $rowKms["MERKKEMAS"] . "') ";
+
+					}
+
+					$status_ins['t_bc20kms'] = "1";
+
+				}else{
+					$status_ins['t_bc20kms'] = "0";
+				}
+
+				//Insert Pungutan
+				$sqlPgt = "SELECT * FROM t_bc20pgt WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
+				$dataPgt = $db->query($sqlPgt);
+
+				if($dataPgt->num_rows > 0){
+					while($rowPgt = $dataPgt->fetch_assoc()){
+
+						$sqlMA_Pgt = "INSERT INTO tblPibPgt (CAR, KdBeban, KdFasil, NilBeban) 
+						VALUES ('" . $mdb_Car . "', '" . $rowPgt["KDBEBAN"] . "', '" . $rowPgt["KDFASIL"] . "', " . $rowPgt["NILBEBAN"] . ") ";
+
+					}
+
+					$status_ins['t_bc20pgt'] = "1";
+
+				}else{
+					$status_ins['t_bc20pgt'] = "0";
+				}
+
+				//Insert Tarif
+				$sqlTrf = "SELECT * FROM t_bc20trf WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
+				$dataTrf = $db->query($sqlTrf);
+
+				if($dataTrf->num_rows > 0){
+					while($rowTrf = $dataTrf->fetch_assoc()){
+
+						$sqlMA_Trf = "INSERT INTO tblPibTrf (CAR, NOHS, SERITRP, KDTRPBM, KDSATBM, TRPBM, KDCUK, KDTRPCUK, KDSATCUK, TRPCUK, TRPPPN, TRPPBM, TRPPPH, KdTrpBmAD, TrpBmAD, KdTrpBmTP, TrpBmTP, KdTrpBmIM, TrpBmIM, KdTrpBmPB, TrpBmPB, KDCUKSUB, HJECuk, KdKmsCuk, IsiPerKmsCuk) 
+						VALUES ('" . $mdb_Car . "', '" . $rowTrf["NOHS"] . "', " . $rowTrf["SERITRP"] . ", '" . $rowTrf["KDTRPBM"] . "', '" . $rowTrf["KDSATBM"] . "', " . $rowTrf["TRPBM"] . ", '" . $rowTrf["KDCUK"] . "', '" . $rowTrf["KDTRPCUK"] . "', '" . $rowTrf["KDSATCUK"] . "', " . $rowTrf["TRPCUK"] . ", " . $rowTrf["TRPPPN"] . ", " . $rowTrf["TRPPBM"] . ", " . $rowTrf["TRPPPH"] . ", '" . $rowTrf["KdTrpBmAD"] . "', " . $rowTrf["TrpBmAD"] . ", '" . $rowTrf["KdTrpBmTP"] . "', " . $rowTrf["TrpBmTP"] . ", '" . $rowTrf["KdTrpBmIM"] . "', " . $rowTrf["TrpBmIM"] . ", '" . $rowTrf["KdTrpBmPB"] . "', " . $rowTrf["TrpBmPB"] . ", '" . $rowTrf["KDCUKSUB"] . "', " . $rowTrf["HJECuk"] . ", '" . $rowTrf["KdKmsCuk"] . "', " . $rowTrf["IsiPerKmsCuk"] . ") ";
+
+					}
+
+					$status_ins['t_bc20trf'] = "1";
+
+				}else{
+					$status_ins['t_bc20trf'] = "0";
+				}
+
+				//Insert Respon
+				$sqlRes = "SELECT * FROM t_bc20res WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
+				$dataRes = $db->query($sqlRes);
+
+				if($dataRes->num_rows > 0){
+					while($rowRes = $dataRes->fetch_assoc()){
+
+						$sqlMA_Res = "INSERT INTO tblPibRes (CAR, RESKD, RESTG, RESWK, DOKRESNO, DOKRESTG, KPBC, PIBNO, PIBTG, KDGUDANG, PEJABAT1, NIP1, JABATAN1, PEJABAT2, NIP2, JATUHTEMPO, KOMTG, KOMWK, DESKRIPSI, DIBACA, JmKemas, NoKemas, NPWPImp, NamaImp, AlamatImp, IDPPJK, NamaPPJK, AlamatPPJK, KodeBill, TanggalBill, TanggalJtTempo, TanggalAju, TotalBayar, Terbilang) 
+						VALUES ('" . $mdb_Car . "', '" . $rowRes["RESKD"] . "', '" . $rowRes["RESTG"] . "', '" . $rowRes["RESWK"] . "', '" . $rowRes["DOKRESNO"] . "', '" . $rowRes["DOKRESTG"] . "', '" . $rowRes["KPBC"] . "', '" . $rowRes["PIBNO"] . "', '" . $rowRes["PIBTG"] . "', '" . $rowRes["KDGUDANG"] . "', '" . $rowRes["PEJABAT1"] . "', '" . $rowRes["NIP1"] . "', '" . $rowRes["JABATAN1"] . "', '" . $rowRes["PEJABAT2"] . "', '" . $rowRes["NIP2"] . "', '" . $rowRes["JATUHTEMPO"] . "', '" . $rowRes["KOMTG"] . "', '" . $rowRes["KOMWK"] . "', '" . $rowRes["DESKRIPSI"] . "', '" . $rowRes["DIBACA"] . "', " . $rowRes["JmKemas"] . ", '" . $rowRes["NoKemas"] . "', '" . $rowRes["NPWPImp"] . "', '" . $rowRes["NamaImp"] . "', '" . $rowRes["AlamatImp"] . "', '" . $rowRes["IDPPJK"] . "', '" . $rowRes["NamaPPJK"] . "', '" . $rowRes["AlamatPPJK"] . "', '" . $rowRes["KodeBill"] . "', '" . $rowRes["TanggalBill"] . "', '" . $rowRes["TanggalJtTempo"] . "', '" . $rowRes["TanggalAju"] . "', '" . $rowRes["TotalBayar"] . "', '" . $rowRes["Terbilang"] . "')";
+
+					}
+
+					$status_ins['t_bc20res'] = "1";
+
+				}else{
+					$status_ins['t_bc20res'] = "0";
+				}
+
+				//Insert Respon Billing
+				$sqlResBill = "SELECT * FROM t_bc20resbill WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
+				$dataResBill = $db->query($sqlResBill);
+
+				if($dataResBill->num_rows > 0){
+					while($rowResBill = $dataResBill->fetch_assoc()){
+
+						$sqlMA_Res = "INSERT INTO tblPIBResBill (Car, ResTg, ResWk, Akun, NPWP, Nilai) 
+						VALUES ('" . $mdb_Car . "', '" . $rowResBill["ResTg"] . "', '" . $rowResBill["ResWk"] . "', '" . $rowResBill["Akun"] . "', '" . $rowResBill["NPWP"] . "', '" . $rowResBill["Nilai"] . "')";
+
+					}
+
+					$status_ins['t_bc20resbill'] = "1";
+
+				}else{
+					$status_ins['t_bc20resbill'] = "0";
+				}
+
+				//Insert Respon NPBL
+				$sqlResNPBL = "SELECT * FROM t_bc20resnpbl WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
+				$dataResNPBL = $db->query($sqlResNPBL);
+
+				if($dataResNPBL->num_rows > 0){
+					while($rowResNPBL = $dataResNPBL->fetch_assoc()){
+
+						$sqlMA_ResNPBL = "INSERT INTO tblPIBResNPBL (Car, ResKd, ResTg, ResWk, Serial, BrgUrai, Ketentuan, Pemberitahuan, Penetapan) 
+						VALUES ('" . $mdb_Car . "', '" . $rowResNPBL["ResKd"] . "', '" . $rowResNPBL["ResTg"] . "', '" . $rowResNPBL["ResWk"] . "', '" . $rowResNPBL["Serial"] . "', '" . $rowResNPBL["BrgUrai"] . "', '" . $rowResNPBL["Ketentuan"] . "', '" . $rowResNPBL["Pemberitahuan"] . "', '" . $rowResNPBL["Penetapan"] . "')";
+
+					}
+
+					$status_ins['t_bc20resnpbl'] = "1";
+
+				}else{
+					$status_ins['t_bc20resnpbl'] = "0";
+				}
+
+				//Insert Respon NPD
+				$sqlResNPD = "SELECT * FROM t_bc20resnpd WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
+				$dataResNPD = $db->query($sqlResNPD);
+				
+				if($dataResNPD->num_rows > 0){		
+					while($rowResNPD = $dataResNPD->fetch_assoc()){
+
+						$sqlMA_ResNPD = "INSERT INTO tblPIBResNPD (Car, ResTg, ResWk, Seri, UrDok, Nilai) 
+						VALUES ('" . $mdb_Car . "', '" . $rowResNPD["ResTg"] . "', '" . $rowResNPD["ResWk"] . "', '" . $rowResNPD["Seri"] . "', '" . $rowResNPD["UrDok"] . "', '" . $rowResNPD["Nilai"] . "')";
+
+					}
+
+					$status_ins['t_bc20resnpd'] = "1";
+
+				}else{
+					$status_ins['t_bc20resnpd'] = "0";
 				}
 
 			}			
@@ -101,12 +268,9 @@ try {
 		}else{
 			
 		}
-		print_r($last_number["Nomor"]); die();
 
-
-		// DETAIL
 	}
-	print_r($adacar["adacar"]); die();
+	print_r($status_ins); die();
 
 }
 catch (PDOException $e) {
