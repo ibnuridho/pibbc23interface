@@ -30,21 +30,24 @@ try {
 			$mdb_Car = '010700000397' . date("Ymd") . fixLen($last_number["Nomor"], 6, "0", STR_PAD_LEFT);
 			
 			//Insert Detail
-			$sqlMA_Hdr = "INSERT INTO tblPibHdr (Car, KdKpbc, JnPib, JkWaktu, CrByr, DokTupKd, DokTupNo, DokTupTg, PosNo, PosSub, PosSubSub, ImpId, ImpNpwp, ImpNama, ImpAlmt, ImpStatus, ApiKd, ApiNo, PpjkId, PpjkNpwp, PpjkNama, PpjkAlmt, PpjkNo, PpjkTg, IndId, IndNpwp, IndNama, IndAlmt, PasokNama, PasokAlmt, PasokNeg, PelBkr, PelMuat, PelTransit, TmpTbn, Moda, AngkutNama, AngkutNo, AngkutFl, TgTiba, KdVal, Ndpbm, NilInv, Freight, BTambahan, Diskon, KdAss, Asuransi, KdHrg, Fob, Cif, Bruto, Netto, JmCont, JmBrg, Status, Snrf, KdFas, Lengkap, VersiModul)
-			VALUES ( '". $mdb_Car . "', '". $rowHdr["KDKPBC"] . "', '". $rowHdr["JNPIB"] . "', 0, '". $rowHdr["CRBYR"] . "', '". $rowHdr["DOKTUPKD"] . "', '". $rowHdr["DOKTUPNO"] . "', '". $rowHdr["DOKTUPTG"] . "', '". $rowHdr["POSNO"] . "', '". $rowHdr["POSSUB"] . "', '". $rowHdr["POSSUBSUB"] . "', '". $rowHdr["IMPID"] . "', '". $rowHdr["IMPNPWP"] . "', '". $rowHdr["IMPNAMA"] . "', '". $rowHdr["IMPALMT"] . "', '". $rowHdr["IMPSTATUS"] . "', '". $rowHdr["APIKD"] . "', '". $rowHdr["APINO"] . "', '". $rowHdr["PPJKID"] . "', '". $rowHdr["PPJKNPWP"] . "', '". $rowHdr["PPJKNAMA"] . "', '". $rowHdr["PPJKALMT"] . "', '". $rowHdr["PPJKNO"] . "', '". $rowHdr["PPJKTG"] . "', '". $rowHdr["INDID"] . "', '". $rowHdr["INDNPWP"] . "', '". $rowHdr["INDNAMA"] . "', '". $rowHdr["INDALMT"] . "', '". $rowHdr["PASOKNAMA"] . "', '". $rowHdr["PASOKALMT"] . "', '". $rowHdr["PASOKNEG"] . "', '". $rowHdr["PELBKR"] . "', '". $rowHdr["PELMUAT"] . "', '". $rowHdr["PELTRANSIT"] . "', '". $rowHdr["TMPTBN"] . "', '". $rowHdr["MODA"] . "', '". $rowHdr["ANGKUTNAMA"] . "', '". $rowHdr["ANGKUTNO"] . "', '". $rowHdr["ANGKUTFL"] . "', '". $rowHdr["TGTIBA"] . "', '". $rowHdr["KDVAL"] . "', ". $rowHdr["NDPBM"] . ", ". $rowHdr["NILINV"] . ", ". $rowHdr["FREIGHT"] . ", ". $rowHdr["BTAMBAHAN"] . ", ". $rowHdr["DISKON"] . ", '". $rowHdr["KDASS"] . "', '". $rowHdr["ASURANSI"] . "', '". $rowHdr["KDHRG"] . "', ". $rowHdr["FOB"] . ", ". $rowHdr["CIF"] . ", ". $rowHdr["BRUTO"] . ", ". $rowHdr["NETTO"] . ", ". $rowHdr["JMCONT"] . ", ". $rowHdr["JMBRG"] . ", '". $rowHdr["STATUS"] . "', '". $rowHdr["SNRF"] . "', '". $rowHdr["KDFAS"] . "', '". $rowHdr["LENGKAP"] . "', 607);";
-
+			$sqlMA_Hdr = "INSERT INTO tblPibHdr (Car, KdKpbc, JnPib, JkWaktu, CrByr, DokTupKd, DokTupNo, DokTupTg, PosNo, PosSub, PosSubSub, ImpId, ImpNpwp, ImpNama, ImpAlmt, ImpStatus, ApiKd, ApiNo, PpjkId, PpjkNpwp, PpjkNama, PpjkAlmt, PpjkNo, PpjkTg, IndId, IndNpwp, IndNama, IndAlmt, PasokNama, PasokAlmt, PasokNeg, PelBkr, PelMuat, PelTransit, TmpTbn, Moda, AngkutNama, AngkutNo, AngkutFl, TgTiba, KdVal, Ndpbm, NilInv, Freight, BTambahan, Diskon, KdAss, Asuransi, KdHrg, Fob, Cif, Bruto, Netto, JmCont, JmBrg, Status, VersiModul)
+			VALUES ( '". $mdb_Car . "', '". $rowHdr["KDKPBC"] . "', '". $rowHdr["JNPIB"] . "', 0, '". $rowHdr["CRBYR"] . "', '". $rowHdr["DOKTUPKD"] . "', '". $rowHdr["DOKTUPNO"] . "', '". $rowHdr["DOKTUPTG"] . "', '". $rowHdr["POSNO"] . "', '". $rowHdr["POSSUB"] . "', '". $rowHdr["POSSUBSUB"] . "', '". $rowHdr["IMPID"] . "', '". $rowHdr["IMPNPWP"] . "', '". $rowHdr["IMPNAMA"] . "', '". $rowHdr["IMPALMT"] . "', '". $rowHdr["IMPSTATUS"] . "', '". $rowHdr["APIKD"] . "', '". $rowHdr["APINO"] . "', '". $rowHdr["PPJKID"] . "', '". $rowHdr["PPJKNPWP"] . "', '". $rowHdr["PPJKNAMA"] . "', '". $rowHdr["PPJKALMT"] . "', '". $rowHdr["PPJKNO"] . "', '". $rowHdr["PPJKTG"] . "', '". $rowHdr["INDID"] . "', '". $rowHdr["INDNPWP"] . "', '". $rowHdr["INDNAMA"] . "', '". $rowHdr["INDALMT"] . "', '". $rowHdr["PASOKNAMA"] . "', '". $rowHdr["PASOKALMT"] . "', '". $rowHdr["PASOKNEG"] . "', '". $rowHdr["PELBKR"] . "', '". $rowHdr["PELMUAT"] . "', '". $rowHdr["PELTRANSIT"] . "', '". $rowHdr["TMPTBN"] . "', '". $rowHdr["MODA"] . "', '". $rowHdr["ANGKUTNAMA"] . "', '". $rowHdr["ANGKUTNO"] . "', '". $rowHdr["ANGKUTFL"] . "', '". $rowHdr["TGTIBA"] . "', '". $rowHdr["KDVAL"] . "', ". $rowHdr["NDPBM"] . ", ". $rowHdr["NILINV"] . ", ". $rowHdr["FREIGHT"] . ", ". $rowHdr["BTAMBAHAN"] . ", ". $rowHdr["DISCOUNT"] . ", '". $rowHdr["KDASS"] . "', '". $rowHdr["ASURANSI"] . "', '". $rowHdr["KDHRG"] . "', ". $rowHdr["FOB"] . ", ". $rowHdr["CIF"] . ", ". $rowHdr["BRUTO"] . ", ". $rowHdr["NETTO"] . ", ". $rowHdr["JMCONT"] . ", ". $rowHdr["JMBRG"] . ", '010', 607);";
+			// die($sqlMA_Hdr);
+			$ins_hdr_p = $dbA->query($sqlMA_Hdr);
 			// $ins_hdr_p = $dbA->prepare($sqlMA_Hdr);
 			// $ins_hdr = $ins_hdr_p->execute();
-			$ins_hdr = true;
+			$result_cek = $dbA->query("SELECT count(1) AS adaHdr FROM tblPibHdr WHERE CAR = '$mdb_Car'");
+			$ins_hdr = $result_cek->fetch();
+			
 			$status_ins = array();
 
-			if($ins_hdr){
-
+			if($ins_hdr["adaHdr"]==1){
+				$status_ins['car'] = $mdb_Car;
+				$status_ins['t_bc20hdr'] = "1";
 				//Update Nomor
 				$new_number = (int)$last_number["Nomor"] + 1;
 				$sqlMA_UpdNum = "UPDATE tblNomor SET Nomor = " . $new_number;
-				// $upd_nmr_p = $dbA->prepare($sqlMA_UpdNum);
-				// $upd_nmr = $upd_nmr_p->execute();
+				$upd_nmr_p = $dbA->query($sqlMA_UpdNum);
 
 				//Insert Detail
 				$sqlDtl = "SELECT * FROM t_bc20dtl WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
@@ -58,6 +61,7 @@ try {
 
 					}
 
+					$ins_dtl_p = $dbA->query($sqlMA_Dtl);
 					$status_ins['t_bc20dtl'] = "1";
 
 				}else{
@@ -76,6 +80,7 @@ try {
 
 					}
 
+					$ins_dok_p = $dbA->query($sqlMA_Dok);
 					$status_ins['t_bc20dok'] = "1";
 
 				}else{
@@ -94,6 +99,7 @@ try {
 
 					}
 
+					$ins_con_p = $dbA->query($sqlMA_Con);
 					$status_ins['t_bc20Con'] = "1";
 
 				}else{
@@ -112,6 +118,7 @@ try {
 
 					}
 
+					$ins_dtldok_p = $dbA->query($sqlMA_DtlDok);
 					$status_ins['t_bc20dtldok'] = "1";
 
 				}else{
@@ -126,10 +133,11 @@ try {
 					while($rowFas = $dataFas->fetch_assoc()){
 
 						$sqlMA_Fas = "INSERT INTO tblPibFas (Car, Serial, KdFasBM, FasBM, KdFasCuk, FasCuk, KdFasPpn, FasPpn, KdFasPph, FasPph, KdFasPbm, FasPbm, KdFasBMAD, FasBMAD, BMADS, KdFasBMTP, FasBMTP, BMTPS, KdFasBMIM, FasBMIM, BMIMS, KdFasBMPB, FasBMPB, BMPBS) 
-						VALUES ('". $rowFas["CAR"] ."', ". $rowFas["SERIBRG"] .", '". $rowFas["KDFASBM"] ."', ". $rowFas["FASBM"] .", '". $rowFas["KDFASCUK"] ."', ". $rowFas["FASCUK"] .", '". $rowFas["KDFASPPN"] ."', ". $rowFas["FASPPN"] .", '". $rowFas["KDFASPPH"] ."', ". $rowFas["FASPPH"] .", '". $rowFas["KDFASPBM"] ."', ". $rowFas["FASPBM"] .", '". $rowFas["KDFASBMAD"] ."', ". $rowFas["FASBMAD"] .", '". $rowFas["BMADS"] ."', '". $rowFas["KDFASBMTP"] ."', ". $rowFas["FASBMTP"] .", '". $rowFas["BMTPS"] ."', '". $rowFas["KDFASBMIM"] ."', ". $rowFas["FASBMIM"] .", '". $rowFas["BMIMS"] ."', '". $rowFas["KDFASBMPB"] ."', ". $rowFas["FASBMPB"] .", '". $rowFas["BMPBS"] ."') ";
+						VALUES ('". $mdb_Car ."', ". $rowFas["SERIAL"] .", '". $rowFas["KDFASBM"] ."', ". $rowFas["FASBM"] .", '". $rowFas["KDFASCUK"] ."', ". $rowFas["FASCUK"] .", '". $rowFas["KDFASPPN"] ."', ". $rowFas["FASPPN"] .", '". $rowFas["KDFASPPH"] ."', ". $rowFas["FASPPH"] .", '". $rowFas["KDFASPBM"] ."', ". $rowFas["FASPBM"] .", '". $rowFas["KDFASBMAD"] ."', ". $rowFas["FASBMAD"] .", '". $rowFas["BMADS"] ."', '". $rowFas["KDFASBMTP"] ."', ". $rowFas["FASBMTP"] .", '". $rowFas["BMTPS"] ."', '". $rowFas["KDFASBMIM"] ."', ". $rowFas["FASBMIM"] .", '". $rowFas["BMIMS"] ."', '". $rowFas["KDFASBMPB"] ."', ". $rowFas["FASBMPB"] .", '". $rowFas["BMPBS"] ."') ";
 
 					}
 
+					$ins_fas_p = $dbA->query($sqlMA_Fas);
 					$status_ins['t_bc20fas'] = "1";
 
 				}else{
@@ -148,6 +156,7 @@ try {
 
 					}
 
+					$ins_kms_p = $dbA->query($sqlMA_Kms);
 					$status_ins['t_bc20kms'] = "1";
 
 				}else{
@@ -166,6 +175,7 @@ try {
 
 					}
 
+					$ins_pgt_p = $dbA->query($sqlMA_Pgt);
 					$status_ins['t_bc20pgt'] = "1";
 
 				}else{
@@ -184,92 +194,105 @@ try {
 
 					}
 
+					$ins_trf_p = $dbA->query($sqlMA_Trf);
 					$status_ins['t_bc20trf'] = "1";
 
 				}else{
 					$status_ins['t_bc20trf'] = "0";
 				}
 
-				//Insert Respon
-				$sqlRes = "SELECT * FROM t_bc20res WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
-				$dataRes = $db->query($sqlRes);
+				// //Insert Respon
+				// $sqlRes = "SELECT * FROM t_bc20res WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
+				// $dataRes = $db->query($sqlRes);
 
-				if($dataRes->num_rows > 0){
-					while($rowRes = $dataRes->fetch_assoc()){
+				// if($dataRes->num_rows > 0){
+				// 	while($rowRes = $dataRes->fetch_assoc()){
 
-						$sqlMA_Res = "INSERT INTO tblPibRes (CAR, RESKD, RESTG, RESWK, DOKRESNO, DOKRESTG, KPBC, PIBNO, PIBTG, KDGUDANG, PEJABAT1, NIP1, JABATAN1, PEJABAT2, NIP2, JATUHTEMPO, KOMTG, KOMWK, DESKRIPSI, DIBACA, JmKemas, NoKemas, NPWPImp, NamaImp, AlamatImp, IDPPJK, NamaPPJK, AlamatPPJK, KodeBill, TanggalBill, TanggalJtTempo, TanggalAju, TotalBayar, Terbilang) 
-						VALUES ('" . $mdb_Car . "', '" . $rowRes["RESKD"] . "', '" . $rowRes["RESTG"] . "', '" . $rowRes["RESWK"] . "', '" . $rowRes["DOKRESNO"] . "', '" . $rowRes["DOKRESTG"] . "', '" . $rowRes["KPBC"] . "', '" . $rowRes["PIBNO"] . "', '" . $rowRes["PIBTG"] . "', '" . $rowRes["KDGUDANG"] . "', '" . $rowRes["PEJABAT1"] . "', '" . $rowRes["NIP1"] . "', '" . $rowRes["JABATAN1"] . "', '" . $rowRes["PEJABAT2"] . "', '" . $rowRes["NIP2"] . "', '" . $rowRes["JATUHTEMPO"] . "', '" . $rowRes["KOMTG"] . "', '" . $rowRes["KOMWK"] . "', '" . $rowRes["DESKRIPSI"] . "', '" . $rowRes["DIBACA"] . "', " . $rowRes["JmKemas"] . ", '" . $rowRes["NoKemas"] . "', '" . $rowRes["NPWPImp"] . "', '" . $rowRes["NamaImp"] . "', '" . $rowRes["AlamatImp"] . "', '" . $rowRes["IDPPJK"] . "', '" . $rowRes["NamaPPJK"] . "', '" . $rowRes["AlamatPPJK"] . "', '" . $rowRes["KodeBill"] . "', '" . $rowRes["TanggalBill"] . "', '" . $rowRes["TanggalJtTempo"] . "', '" . $rowRes["TanggalAju"] . "', '" . $rowRes["TotalBayar"] . "', '" . $rowRes["Terbilang"] . "')";
+				// 		$sqlMA_Res = "INSERT INTO tblPibRes (CAR, RESKD, RESTG, RESWK, DOKRESNO, DOKRESTG, KPBC, PIBNO, PIBTG, KDGUDANG, PEJABAT1, NIP1, JABATAN1, PEJABAT2, NIP2, JATUHTEMPO, KOMTG, KOMWK, DESKRIPSI, DIBACA, JmKemas, NoKemas, NPWPImp, NamaImp, AlamatImp, IDPPJK, NamaPPJK, AlamatPPJK, KodeBill, TanggalBill, TanggalJtTempo, TanggalAju, TotalBayar, Terbilang) 
+				// 		VALUES ('" . $mdb_Car . "', '" . $rowRes["RESKD"] . "', '" . $rowRes["RESTG"] . "', '" . $rowRes["RESWK"] . "', '" . $rowRes["DOKRESNO"] . "', '" . $rowRes["DOKRESTG"] . "', '" . $rowRes["KPBC"] . "', '" . $rowRes["PIBNO"] . "', '" . $rowRes["PIBTG"] . "', '" . $rowRes["KDGUDANG"] . "', '" . $rowRes["PEJABAT1"] . "', '" . $rowRes["NIP1"] . "', '" . $rowRes["JABATAN1"] . "', '" . $rowRes["PEJABAT2"] . "', '" . $rowRes["NIP2"] . "', '" . $rowRes["JATUHTEMPO"] . "', '" . $rowRes["KOMTG"] . "', '" . $rowRes["KOMWK"] . "', '" . $rowRes["DESKRIPSI"] . "', '" . $rowRes["DIBACA"] . "', " . $rowRes["JmKemas"] . ", '" . $rowRes["NoKemas"] . "', '" . $rowRes["NPWPImp"] . "', '" . $rowRes["NamaImp"] . "', '" . $rowRes["AlamatImp"] . "', '" . $rowRes["IDPPJK"] . "', '" . $rowRes["NamaPPJK"] . "', '" . $rowRes["AlamatPPJK"] . "', '" . $rowRes["KodeBill"] . "', '" . $rowRes["TanggalBill"] . "', '" . $rowRes["TanggalJtTempo"] . "', '" . $rowRes["TanggalAju"] . "', '" . $rowRes["TotalBayar"] . "', '" . $rowRes["Terbilang"] . "')";
 
-					}
+				// 	}
 
-					$status_ins['t_bc20res'] = "1";
+				// 	$status_ins['t_bc20res'] = "1";
 
-				}else{
-					$status_ins['t_bc20res'] = "0";
-				}
+				// }else{
+				// 	$status_ins['t_bc20res'] = "0";
+				// }
 
-				//Insert Respon Billing
-				$sqlResBill = "SELECT * FROM t_bc20resbill WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
-				$dataResBill = $db->query($sqlResBill);
+				// //Insert Respon Billing
+				// $sqlResBill = "SELECT * FROM t_bc20resbill WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
+				// $dataResBill = $db->query($sqlResBill);
 
-				if($dataResBill->num_rows > 0){
-					while($rowResBill = $dataResBill->fetch_assoc()){
+				// if($dataResBill->num_rows > 0){
+				// 	while($rowResBill = $dataResBill->fetch_assoc()){
 
-						$sqlMA_Res = "INSERT INTO tblPIBResBill (Car, ResTg, ResWk, Akun, NPWP, Nilai) 
-						VALUES ('" . $mdb_Car . "', '" . $rowResBill["ResTg"] . "', '" . $rowResBill["ResWk"] . "', '" . $rowResBill["Akun"] . "', '" . $rowResBill["NPWP"] . "', '" . $rowResBill["Nilai"] . "')";
+				// 		$sqlMA_Res = "INSERT INTO tblPIBResBill (Car, ResTg, ResWk, Akun, NPWP, Nilai) 
+				// 		VALUES ('" . $mdb_Car . "', '" . $rowResBill["ResTg"] . "', '" . $rowResBill["ResWk"] . "', '" . $rowResBill["Akun"] . "', '" . $rowResBill["NPWP"] . "', '" . $rowResBill["Nilai"] . "')";
 
-					}
+				// 	}
 
-					$status_ins['t_bc20resbill'] = "1";
+				// 	$status_ins['t_bc20resbill'] = "1";
 
-				}else{
-					$status_ins['t_bc20resbill'] = "0";
-				}
+				// }else{
+				// 	$status_ins['t_bc20resbill'] = "0";
+				// }
 
-				//Insert Respon NPBL
-				$sqlResNPBL = "SELECT * FROM t_bc20resnpbl WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
-				$dataResNPBL = $db->query($sqlResNPBL);
+				// //Insert Respon NPBL
+				// $sqlResNPBL = "SELECT * FROM t_bc20resnpbl WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
+				// $dataResNPBL = $db->query($sqlResNPBL);
 
-				if($dataResNPBL->num_rows > 0){
-					while($rowResNPBL = $dataResNPBL->fetch_assoc()){
+				// if($dataResNPBL->num_rows > 0){
+				// 	while($rowResNPBL = $dataResNPBL->fetch_assoc()){
 
-						$sqlMA_ResNPBL = "INSERT INTO tblPIBResNPBL (Car, ResKd, ResTg, ResWk, Serial, BrgUrai, Ketentuan, Pemberitahuan, Penetapan) 
-						VALUES ('" . $mdb_Car . "', '" . $rowResNPBL["ResKd"] . "', '" . $rowResNPBL["ResTg"] . "', '" . $rowResNPBL["ResWk"] . "', '" . $rowResNPBL["Serial"] . "', '" . $rowResNPBL["BrgUrai"] . "', '" . $rowResNPBL["Ketentuan"] . "', '" . $rowResNPBL["Pemberitahuan"] . "', '" . $rowResNPBL["Penetapan"] . "')";
+				// 		$sqlMA_ResNPBL = "INSERT INTO tblPIBResNPBL (Car, ResKd, ResTg, ResWk, Serial, BrgUrai, Ketentuan, Pemberitahuan, Penetapan) 
+				// 		VALUES ('" . $mdb_Car . "', '" . $rowResNPBL["ResKd"] . "', '" . $rowResNPBL["ResTg"] . "', '" . $rowResNPBL["ResWk"] . "', '" . $rowResNPBL["Serial"] . "', '" . $rowResNPBL["BrgUrai"] . "', '" . $rowResNPBL["Ketentuan"] . "', '" . $rowResNPBL["Pemberitahuan"] . "', '" . $rowResNPBL["Penetapan"] . "')";
 
-					}
+				// 	}
 
-					$status_ins['t_bc20resnpbl'] = "1";
+				// 	$status_ins['t_bc20resnpbl'] = "1";
 
-				}else{
-					$status_ins['t_bc20resnpbl'] = "0";
-				}
+				// }else{
+				// 	$status_ins['t_bc20resnpbl'] = "0";
+				// }
 
-				//Insert Respon NPD
-				$sqlResNPD = "SELECT * FROM t_bc20resnpd WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
-				$dataResNPD = $db->query($sqlResNPD);
+				// //Insert Respon NPD
+				// $sqlResNPD = "SELECT * FROM t_bc20resnpd WHERE KODE_TRADER = 1 AND CAR = '$CAR'";
+				// $dataResNPD = $db->query($sqlResNPD);
 				
-				if($dataResNPD->num_rows > 0){		
-					while($rowResNPD = $dataResNPD->fetch_assoc()){
+				// if($dataResNPD->num_rows > 0){		
+				// 	while($rowResNPD = $dataResNPD->fetch_assoc()){
 
-						$sqlMA_ResNPD = "INSERT INTO tblPIBResNPD (Car, ResTg, ResWk, Seri, UrDok, Nilai) 
-						VALUES ('" . $mdb_Car . "', '" . $rowResNPD["ResTg"] . "', '" . $rowResNPD["ResWk"] . "', '" . $rowResNPD["Seri"] . "', '" . $rowResNPD["UrDok"] . "', '" . $rowResNPD["Nilai"] . "')";
+				// 		$sqlMA_ResNPD = "INSERT INTO tblPIBResNPD (Car, ResTg, ResWk, Seri, UrDok, Nilai) 
+				// 		VALUES ('" . $mdb_Car . "', '" . $rowResNPD["ResTg"] . "', '" . $rowResNPD["ResWk"] . "', '" . $rowResNPD["Seri"] . "', '" . $rowResNPD["UrDok"] . "', '" . $rowResNPD["Nilai"] . "')";
 
-					}
+				// 	}
 
-					$status_ins['t_bc20resnpd'] = "1";
+				// 	$status_ins['t_bc20resnpd'] = "1";
 
-				}else{
-					$status_ins['t_bc20resnpd'] = "0";
-				}
+				// }else{
+				// 	$status_ins['t_bc20resnpd'] = "0";
+				// }
 
+			}else{
+				$status_ins['t_bc20hdr'] = "0";
 			}			
 			
-			
+			$t_bc20log = [
+		        'CAR' => $mdb_Car, 
+		        'ACTION_NAME' => "LOAD PIB TO MDB",
+		        'DESCRIPTION' => implode("|", $status_ins), 
+		        // 'DESCRIPTION' => http_build_query($status_ins), 
+		        'WK_REKAM' => date("d-m-Y h:i:s")
+		    ];
+
+		    $insert_bc20log = insertRefernce('t_bc20log', $t_bc20log);
+
 		}else{
 			
 		}
 
 	}
+
 	print_r($status_ins); die();
 
 }
