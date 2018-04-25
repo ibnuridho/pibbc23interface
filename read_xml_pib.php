@@ -29,6 +29,7 @@ foreach($xmlFiles as $file){
 	if($xmlArr->DOCTYPE == "C5") {
 		foreach ($xmlArr->HEADER as $xmlHeader) {
 			$car = (string)($xmlHeader->CAR);
+			//Car kosong, data baru
 			if($car=="") $car = date("Ymdhis");
 			$dataHeader = [
 				'KODE_TRADER' => $kode_trader = ($xmlHeader->KODE_TRADER) ? (string)$xmlHeader->KODE_TRADER : "0",
@@ -103,6 +104,31 @@ foreach($xmlFiles as $file){
 			$insertData[] = insertRefernce('t_bc20hdr', $dataHeader);
 		}
 
+		foreach ($xmlArr->HEADER->PACKAGES as $xmlKmss) {
+			foreach ($xmlKmss->PACKAGE as $xmlKms) {
+				$dataKms = [
+					'KODE_TRADER' => $kode_trader,
+					'CAR'	=> $car,
+					'JNKEMAS' => ($xmlKms->JNKEMAS) ? (string)$xmlKms->JNKEMAS : "",
+					'JMKEMAS' => ($xmlKms->JMKEMAS) ? (string)$xmlKms->JMKEMAS : "",
+					'MERKKEMAS' => ($xmlKms->MERKKEMAS) ? (string)$xmlKms->MERKKEMAS : "",
+				];
+				$insertData[] = insertRefernce('t_bc20kms', $dataKms);
+			}
+		}
+
+		foreach ($xmlArr->HEADER->CHARGES as $xmlPgts) {
+			foreach ($xmlPgts->CHARGE as $xmlPgt) {
+				$dataPgt = [
+					'KODE_TRADER' => $kode_trader,
+					'CAR'	=> $car,
+					'KDBEBAN' => ($xmlPgt->KDBEBAN) ? (string)$xmlPgt->KDBEBAN : "",
+					'KDFASIL' => ($xmlPgt->KDFASIL) ? (string)$xmlPgt->KDFASIL : "",
+					'NILBEBAN' => ($xmlPgt->NILBEBAN) ? (string)$xmlPgt->NILBEBAN : "",
+				];
+				$insertData[] = insertRefernce('t_bc20pgt', $dataPgt);
+			}
+		}
 		// die();
 
 		foreach ($xmlArr->DETAIL->DOCUMENTS as $xmlDocs) {
@@ -242,32 +268,6 @@ foreach($xmlFiles as $file){
 					'BMPBS' => ($xmlItemFac->BMPBS) ? (string)$xmlItemFac->BMPBS : "",
 				];
 				$insertData[] = insertRefernce('t_bc20fas', $dataFac);
-			}
-		}
-
-		foreach ($xmlArr->DETAIL->PACKAGES as $xmlKmss) {
-			foreach ($xmlKmss->PACKAGE as $xmlKms) {
-				$dataKms = [
-					'KODE_TRADER' => $kode_trader,
-					'CAR'	=> $car,
-					'JNKEMAS' => ($xmlKms->JNKEMAS) ? (string)$xmlKms->JNKEMAS : "",
-					'JMKEMAS' => ($xmlKms->JMKEMAS) ? (string)$xmlKms->JMKEMAS : "",
-					'MERKKEMAS' => ($xmlKms->MERKKEMAS) ? (string)$xmlKms->MERKKEMAS : "",
-				];
-				$insertData[] = insertRefernce('t_bc20kms', $dataKms);
-			}
-		}
-
-		foreach ($xmlArr->DETAIL->CHARGES as $xmlPgts) {
-			foreach ($xmlPgts->CHARGE as $xmlPgt) {
-				$dataPgt = [
-					'KODE_TRADER' => $kode_trader,
-					'CAR'	=> $car,
-					'KDBEBAN' => ($xmlPgt->KDBEBAN) ? (string)$xmlPgt->KDBEBAN : "",
-					'KDFASIL' => ($xmlPgt->KDFASIL) ? (string)$xmlPgt->KDFASIL : "",
-					'NILBEBAN' => ($xmlPgt->NILBEBAN) ? (string)$xmlPgt->NILBEBAN : "",
-				];
-				$insertData[] = insertRefernce('t_bc20pgt', $dataPgt);
 			}
 		}
 

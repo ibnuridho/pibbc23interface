@@ -102,6 +102,32 @@ foreach($xmlFiles as $file){
 		$insertData[] = insertRefernce('t_bc23hdr', $dataHeader);
 	}
 
+	foreach ($xmlArr->HEADER->PACKAGES as $xmlKmss) {
+		foreach ($xmlKmss->PACKAGE as $xmlKms) {
+			$dataKms = [
+				'KODE_TRADER' => $kode_trader,
+				'CAR'	=> $car,
+				'JNKEMAS' => ($xmlKms->JNKEMAS) ? (string)$xmlKms->JNKEMAS : "",
+				'JMKEMAS' => ($xmlKms->JMKEMAS) ? (string)$xmlKms->JMKEMAS : "",
+				'MERKKEMAS' => ($xmlKms->MERKKEMAS) ? (string)$xmlKms->MERKKEMAS : "",
+			];
+			$insertData[] = insertRefernce('t_bc23kms', $dataKms);
+		}
+	}
+
+	foreach ($xmlArr->HEADER->CHARGES as $xmlPgts) {
+		foreach ($xmlPgts->CHARGE as $xmlPgt) {
+			$dataPgt = [
+				'KODE_TRADER' => $kode_trader,
+				'CAR'	=> $car,
+				'KDBEBAN' => ($xmlPgt->KDBEBAN) ? (string)$xmlPgt->KDBEBAN : "",
+				'KDFASIL' => ($xmlPgt->KDFASIL) ? (string)$xmlPgt->KDFASIL : "",
+				'NILBEBAN' => ($xmlPgt->NILBEBAN) ? (string)$xmlPgt->NILBEBAN : "",
+			];
+			$insertData[] = insertRefernce('t_bc23pgt', $dataPgt);
+		}
+	}
+
 	foreach ($xmlArr->DETAIL->DOCUMENTS as $xmlDocs) {
 		foreach ($xmlDocs->DOCUMENT as $xmlDoc) {
 			$dataDoc = [
@@ -170,32 +196,6 @@ foreach($xmlFiles as $file){
 				'KETERANGAN' => ($xmlCon->KETERANGAN) ? (string)$xmlCon->KETERANGAN : "",
 			];
 			$insertData[] = insertRefernce('t_bc23con', $dataCon);
-		}
-	}
-
-	foreach ($xmlArr->DETAIL->PACKAGES as $xmlKmss) {
-		foreach ($xmlKmss->PACKAGE as $xmlKms) {
-			$dataKms = [
-				'KODE_TRADER' => $kode_trader,
-				'CAR'	=> $car,
-				'JNKEMAS' => ($xmlKms->JNKEMAS) ? (string)$xmlKms->JNKEMAS : "",
-				'JMKEMAS' => ($xmlKms->JMKEMAS) ? (string)$xmlKms->JMKEMAS : "",
-				'MERKKEMAS' => ($xmlKms->MERKKEMAS) ? (string)$xmlKms->MERKKEMAS : "",
-			];
-			$insertData[] = insertRefernce('t_bc23kms', $dataKms);
-		}
-	}
-
-	foreach ($xmlArr->DETAIL->CHARGES as $xmlPgts) {
-		foreach ($xmlPgts->CHARGE as $xmlPgt) {
-			$dataPgt = [
-				'KODE_TRADER' => $kode_trader,
-				'CAR'	=> $car,
-				'KDBEBAN' => ($xmlPgt->KDBEBAN) ? (string)$xmlPgt->KDBEBAN : "",
-				'KDFASIL' => ($xmlPgt->KDFASIL) ? (string)$xmlPgt->KDFASIL : "",
-				'NILBEBAN' => ($xmlPgt->NILBEBAN) ? (string)$xmlPgt->NILBEBAN : "",
-			];
-			$insertData[] = insertRefernce('t_bc23pgt', $dataPgt);
 		}
 	}
 
