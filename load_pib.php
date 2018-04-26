@@ -5,7 +5,7 @@ include('lib/main.php');
 // $dbName = __DIR__ . DIRECTORY_SEPARATOR . "msaccess/dbPIB.mdb";
 $dbName = "C:/BeaCukai/PIB6/dbPIB.mdb";
 if (!file_exists($dbName)) {
-    die("Could not find database file.");
+    die("Could not find PIB Database file.");
 }
 
 try {
