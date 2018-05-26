@@ -2,14 +2,20 @@
 error_reporting(E_ALL & ~E_NOTICE);
 libxml_use_internal_errors(true);
 
-function insertRefernce($table, $arrData, $allField = false, $set_last_id = ""){
+function insertRefernce($table, $arrData, $set_db = "LOCAL", $allField = false, $set_last_id = ""){
     global $db;
+    global $db_tpb;
 
     $arrData = array_change_key_case($arrData,CASE_UPPER);
     $arrData = array_map('trim', $arrData);
     $arrData = array_map('strtoupper', $arrData);
     $sqlTBL = 'SHOW FIELDS FROM ' . $table;
-    $datTBL = $db->query($sqlTBL);
+
+    switch ($set_db) {
+        case 'TPB': $datTBL = $db_tpb->query($sqlTBL); break;
+        default: $datTBL = $db->query($sqlTBL); break;
+    }
+
     while($row = $datTBL->fetch_assoc()){
         $arrTBL[] = $row;
     }
@@ -87,14 +93,25 @@ function insertRefernce($table, $arrData, $allField = false, $set_last_id = ""){
     $last_id = 0;
 
     $sqlCek = "SELECT * FROM $table WHERE " . $dataWhere;
-    $datCek = $db->query($sqlCek);
+    switch ($set_db) {
+        case 'TPB': $datCek = $db_tpb->query($sqlCek); break;
+        default: $datCek = $db->query($sqlCek); break;
+    }
     if ($datCek->num_rows == 0) {
         $columns = implode(", ",array_keys($data));
         $values  = implode(", ", array_values($data));
 
         $sqlIns = "INSERT INTO $table ($columns) VALUES ($values)";
-        $exec = $db->query($sqlIns);
-        if($set_last_id != "") $last_id = $db->insert_id;
+        switch ($set_db) {
+            case 'TPB': 
+                $exec = $db_tpb->query($sqlIns);
+                if($set_last_id != "") $last_id = $db_tpb->insert_id;
+                break;
+            default: 
+                $exec = $db->query($sqlIns);
+                if($set_last_id != "") $last_id = $db->insert_id;
+                break;
+        }   
         
     } else {
         // $data = array_diff($data, $whrTBL);
@@ -103,7 +120,10 @@ function insertRefernce($table, $arrData, $allField = false, $set_last_id = ""){
 
         $sqlUpd = "UPDATE $table SET $dataUpd WHERE " . $dataWhere;
         // return $sqlUpd;
-        $exec = $db->query($sqlUpd);
+        switch ($set_db) {
+            case 'TPB': $exec = $db_tpb->query($sqlUpd); break;
+            default: $exec = $db->query($sqlUpd); break;
+        }
         $last_id = "";
     }
     
