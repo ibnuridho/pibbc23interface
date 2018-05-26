@@ -14,147 +14,180 @@ while($row_Intf_Hdr = $data_Intf_Hdr->fetch_assoc()){
     $data_Tpb_Cek = $db_tpb->query($sql_Tpb_Cek)->fetch_assoc();
 
     if ($data_Tpb_Cek["adaCar"] == 0) {
+    	// INSERT HEADER ON TPB
     	$data_Tpb_Hdr = [
-			"ALAMAT_PEMASOK" => $row_Intf_Hdr["PASOKALMT"],
-			"ALAMAT_PEMILIK" => $row_Intf_Hdr["INDALMT"],
-			"ALAMAT_PENERIMA_BARANG" => $row_Intf_Hdr[""],
-			"ALAMAT_PENGIRIM" => $row_Intf_Hdr[""],
-			"ALAMAT_PENGUSAHA" => $row_Intf_Hdr[""],
-			"ALAMAT_PPJK" => $row_Intf_Hdr["PPJKALMT"],
-			"API_PEMILIK" => $row_Intf_Hdr[""],
-			"API_PENERIMA" => $row_Intf_Hdr[""],
-			"API_PENGUSAHA" => $row_Intf_Hdr[""],
-			"ASAL_DATA" => $row_Intf_Hdr[""],
+			"KODE_BENDERA" => $row_Intf_Hdr["ANGKUTFL"],
+			"NAMA_PENGANGKUT" => $row_Intf_Hdr["ANGKUTNAMA"],
+			"NOMOR_VOY_FLIGHT" => $row_Intf_Hdr["ANGKUTNO"],
+			"KODE_JENIS_API" => $row_Intf_Hdr["APIKD"],
+			"NOMOR_API" => $row_Intf_Hdr["APINO"],
 			"ASURANSI" => $row_Intf_Hdr["ASURANSI"],
-			"BIAYA_TAMBAHAN" => $row_Intf_Hdr["BTAMBAHAN"],
 			"BRUTO" => $row_Intf_Hdr["BRUTO"],
+			"BIAYA_TAMBAHAN" => $row_Intf_Hdr["BTAMBAHAN"],
+			"NOMOR_AJU" => $row_Intf_Hdr["CAR"],
 			"CIF" => $row_Intf_Hdr["CIF"],
 			"CIF_RUPIAH" => $row_Intf_Hdr["CIFRP"],
 			"DISKON" => $row_Intf_Hdr["DISKON"],
-			"FLAG_PEMILIK" => $row_Intf_Hdr[""],
-			"FLAG_URL_DOKUMEN_PABEAN" => $row_Intf_Hdr[""],
+			"KODE_TUTUP_PU" => $row_Intf_Hdr["DOKTUPNO"],
 			"FOB" => $row_Intf_Hdr["FOB"],
 			"FREIGHT" => $row_Intf_Hdr["FREIGHT"],
-			"HARGA_BARANG_LDP" => $row_Intf_Hdr[""],
-			"HARGA_INVOICE" => $row_Intf_Hdr["NILINV"],
-			"HARGA_PENYERAHAN" => $row_Intf_Hdr[""],
-			"HARGA_TOTAL" => $row_Intf_Hdr[""],
-			"ID_MODUL" => $row_Intf_Hdr[""],
-			"ID_PEMASOK" => $row_Intf_Hdr[""],
-			"ID_PEMILIK" => $row_Intf_Hdr["INDNPWP"],
-			"ID_PENERIMA_BARANG" => $row_Intf_Hdr[""],
-			"ID_PENGIRIM" => $row_Intf_Hdr[""],
-			"ID_PENGUSAHA" => $row_Intf_Hdr["USAHANPWP"],
-			"ID_PPJK" => $row_Intf_Hdr["PPJKNPWP"],
-			"JABATAN_TTD" => $row_Intf_Hdr[""],
-			"JUMLAH_BARANG" => $row_Intf_Hdr["JMBRG"],
-			"JUMLAH_KEMASAN" => $row_Intf_Hdr[""],
-			"JUMLAH_KONTAINER" => $row_Intf_Hdr["JMCONT"],
-			"KESESUAIAN_DOKUMEN" => $row_Intf_Hdr[""],
-			"KETERANGAN" => $row_Intf_Hdr[""],
-			"KODE_ASAL_BARANG" => $row_Intf_Hdr["PASOKNEG"],
-			"KODE_ASURANSI" => $row_Intf_Hdr["KDASS"],
-			"KODE_BENDERA" => $row_Intf_Hdr["ANGKUTFL"],
-			"KODE_CARA_ANGKUT" => $row_Intf_Hdr[""],
-			"KODE_CARA_BAYAR" => $row_Intf_Hdr[""],
-			"KODE_DAERAH_ASAL" => $row_Intf_Hdr[""],
-			"KODE_DOKUMEN_PABEAN" => $row_Intf_Hdr[""],
-			"KODE_FASILITAS" => $row_Intf_Hdr[""],
-			"KODE_FTZ" => $row_Intf_Hdr[""],
-			"KODE_HARGA" => $row_Intf_Hdr["KDHRG"],
-			"KODE_ID_PEMASOK" => $row_Intf_Hdr[""],
-			"KODE_ID_PEMILIK" => $row_Intf_Hdr[""],
-			"KODE_ID_PENERIMA_BARANG" => $row_Intf_Hdr[""],
-			"KODE_ID_PENGIRIM" => $row_Intf_Hdr[""],
-			"KODE_ID_PENGUSAHA" => $row_Intf_Hdr[""],
-			"KODE_ID_PPJK" => $row_Intf_Hdr[""],
-			"KODE_JENIS_API" => $row_Intf_Hdr["APIKD"],
-			"KODE_JENIS_API_PEMILIK" => $row_Intf_Hdr[""],
-			"KODE_JENIS_API_PENERIMA" => $row_Intf_Hdr[""],
-			"KODE_JENIS_API_PENGUSAHA" => $row_Intf_Hdr[""],
-			"KODE_JENIS_BARANG" => $row_Intf_Hdr[""],
-			"KODE_JENIS_BC25" => $row_Intf_Hdr[""],
-			"KODE_JENIS_NILAI" => $row_Intf_Hdr[""],
-			"KODE_JENIS_PEMASUKAN01" => $row_Intf_Hdr[""],
-			"KODE_JENIS_PEMASUKAN02" => $row_Intf_Hdr[""],
-			"KODE_JENIS_TPB" => $row_Intf_Hdr[""],
-			"KODE_KANTOR" => $row_Intf_Hdr[""],
-			"KODE_KANTOR_BONGKAR" => $row_Intf_Hdr["KDKPBCBONGKAR"],
-			"KODE_KANTOR_TUJUAN" => $row_Intf_Hdr["KDKPBC"],
-			"KODE_LOKASI_BAYAR" => $row_Intf_Hdr[""],
-			"KODE_NEGARA_PEMASOK" => $row_Intf_Hdr["PASOKNEG"],
-			"KODE_NEGARA_PEMILIK" => $row_Intf_Hdr[""],
-			"KODE_NEGARA_PENGIRIM" => $row_Intf_Hdr[""],
-			"KODE_NEGARA_TUJUAN" => $row_Intf_Hdr[""],
-			"KODE_PEL_BONGKAR" => $row_Intf_Hdr["PELBKR"],
-			"KODE_PEL_MUAT" => $row_Intf_Hdr["PELMUAT"],
-			"KODE_PEL_TRANSIT" => $row_Intf_Hdr["PELTRANSIT"],
-			"KODE_PEMBAYAR" => $row_Intf_Hdr[""],
-			"KODE_STATUS" => $row_Intf_Hdr[""],
-			"KODE_STATUS_PENGUSAHA" => $row_Intf_Hdr[""],
-			"KODE_STATUS_PERBAIKAN" => $row_Intf_Hdr[""],
-			"KODE_TPS" => $row_Intf_Hdr[""],
-			"KODE_TUJUAN_PEMASUKAN" => $row_Intf_Hdr[""],
-			"KODE_TUJUAN_PENGIRIMAN" => $row_Intf_Hdr[""],
-			"KODE_TUJUAN_TPB" => $row_Intf_Hdr[""],
-			"KODE_TUTUP_PU" => $row_Intf_Hdr[""],
-			"KODE_VALUTA" => $row_Intf_Hdr[""],
-			"KOTA_TTD" => $row_Intf_Hdr[""],
-			"LOKASI_ASAL" => $row_Intf_Hdr[""],
-			"LOKASI_TUJUAN" => $row_Intf_Hdr[""],
-			"NAMA_PEMASOK" => $row_Intf_Hdr["PASOKNAMA"],
+			"ALAMAT_PEMILIK" => $row_Intf_Hdr["INDALMT"],
+			"KODE_JENIS_API_PEMILIK" => $row_Intf_Hdr["INDAPIKD"],
+			"API_PEMILIK" => $row_Intf_Hdr["INDAPINO"],
+			"ID_PEMILIK" => $row_Intf_Hdr["INDID"],
 			"NAMA_PEMILIK" => $row_Intf_Hdr["INDNAMA"],
-			"NAMA_PENERIMA_BARANG" => $row_Intf_Hdr[""],
-			"NAMA_PENGANGKUT" => $row_Intf_Hdr[""],
-			"NAMA_PENGIRIM" => $row_Intf_Hdr[""],
-			"NAMA_PENGUSAHA" => $row_Intf_Hdr["USAHANAMA"],
-			"NAMA_PPJK" => $row_Intf_Hdr["PPJKNAMA"],
+			"KODE_ID_PEMILIK" => $row_Intf_Hdr["INDNPWP"],
+			"JABATAN_TTD" => $row_Intf_Hdr["JABATANTTD"],
+			"JUMLAH_BARANG" => $row_Intf_Hdr["JMBRG"],
+			"JUMLAH_KONTAINER" => $row_Intf_Hdr["JMCONT"],
+			"KODE_ASURANSI" => $row_Intf_Hdr["KDASS"],
+			"KODE_FASILITAS" => $row_Intf_Hdr["KDFAS"],
+			"KODE_HARGA" => $row_Intf_Hdr["KDHRG"],
+			"KODE_KANTOR" => $row_Intf_Hdr["KDKPBC"],
+			"KODE_KANTOR_BONGKAR" => $row_Intf_Hdr["KDKPBCBONGKAR"],
+			"KODE_JENIS_TPB" => $row_Intf_Hdr["KDTPB"],
+			"KODE_VALUTA" => $row_Intf_Hdr["KDVAL"],
+			"KOTA_TTD" => $row_Intf_Hdr["KOTA_TTD"],
+			"KODE_CARA_ANGKUT" => $row_Intf_Hdr["MODA"],
 			"NAMA_TTD" => $row_Intf_Hdr["NAMA_TTD"],
 			"NDPBM" => $row_Intf_Hdr["NDPBM"],
 			"NETTO" => $row_Intf_Hdr["NETTO"],
-			"NILAI_INCOTERM" => $row_Intf_Hdr[""],
-			"NIPER_PENERIMA" => $row_Intf_Hdr[""],
-			"NOMOR_AJU" => $row_Intf_Hdr["CAR"],
-			"NOMOR_API" => $row_Intf_Hdr[""],
-			"NOMOR_BC11" => $row_Intf_Hdr[""],
-			"NOMOR_BILLING" => $row_Intf_Hdr[""],
-			"NOMOR_DAFTAR" => $row_Intf_Hdr[""],
-			"NOMOR_IJIN_BPK_PEMASOK" => $row_Intf_Hdr[""],
-			"NOMOR_IJIN_BPK_PENGUSAHA" => $row_Intf_Hdr[""],
-			"NOMOR_IJIN_TPB" => $row_Intf_Hdr[""],
-			"NOMOR_IJIN_TPB_PENERIMA" => $row_Intf_Hdr[""],
-			"NOMOR_VOY_FLIGHT" => $row_Intf_Hdr[""],
-			"NPPPJK" => $row_Intf_Hdr[""],
-			"NPWP_BILLING" => $row_Intf_Hdr[""],
-			"POS_BC11" => $row_Intf_Hdr[""],
-			"SERI" => $row_Intf_Hdr[""],
-			"SUBPOS_BC11" => $row_Intf_Hdr[""],
-			"SUBSUBPOS_BC11" => $row_Intf_Hdr[""],
-			"TANGGAL_AJU" => $row_Intf_Hdr[""],
-			"TANGGAL_BC11" => $row_Intf_Hdr[""],
-			"TANGGAL_BERANGKAT" => $row_Intf_Hdr[""],
-			"TANGGAL_BILLING" => $row_Intf_Hdr[""],
-			"TANGGAL_DAFTAR" => $row_Intf_Hdr[""],
-			"TANGGAL_IJIN_BPK_PEMASOK" => $row_Intf_Hdr[""],
-			"TANGGAL_IJIN_BPK_PENGUSAHA" => $row_Intf_Hdr[""],
-			"TANGGAL_IJIN_TPB" => $row_Intf_Hdr[""],
-			"TANGGAL_NPPPJK" => $row_Intf_Hdr[""],
-			"TANGGAL_TIBA" => $row_Intf_Hdr[""],
-			"TANGGAL_TTD" => $row_Intf_Hdr[""],
-			"TGL_JATUH_TEMPO_BILLING" => $row_Intf_Hdr[""],
-			"TOTAL_BAYAR" => $row_Intf_Hdr[""],
-			"TOTAL_BEBAS" => $row_Intf_Hdr[""],
-			"TOTAL_DILUNASI" => $row_Intf_Hdr[""],
-			"TOTAL_JAMIN" => $row_Intf_Hdr[""],
-			"TOTAL_SUDAH_DILUNASI" => $row_Intf_Hdr[""],
-			"TOTAL_TANGGUH" => $row_Intf_Hdr[""],
-			"TOTAL_TANGGUNG" => $row_Intf_Hdr[""],
-			"TOTAL_TIDAK_DIPUNGUT" => $row_Intf_Hdr[""],
-			"URL_DOKUMEN_PABEAN" => $row_Intf_Hdr[""],
-			"VERSI_MODUL" => $row_Intf_Hdr[""],
-			"VOLUME" => $row_Intf_Hdr[""],
-			"WAKTU_BONGKAR" => $row_Intf_Hdr[""],
-			"WAKTU_STUFFING" => $row_Intf_Hdr[""],
+			"HARGA_INVOICE" => $row_Intf_Hdr["NILINV"],
+			"ALAMAT_PEMASOK" => $row_Intf_Hdr["PASOKALMT"],
+			"NAMA_PEMASOK" => $row_Intf_Hdr["PASOKNAMA"],
+			"KODE_NEGARA_PEMASOK" => $row_Intf_Hdr["PASOKNEG"],
+			"KODE_PEL_BONGKAR" => $row_Intf_Hdr["PELBKR"],
+			"KODE_PEL_MUAT" => $row_Intf_Hdr["PELMUAT"],
+			"KODE_PEL_TRANSIT" => $row_Intf_Hdr["PELTRANSIT"],
+			"POS_BC11" => $row_Intf_Hdr["POSNO"],
+			"SUBPOS_BC11" => $row_Intf_Hdr["POSSUB"],
+			"ALAMAT_PPJK" => $row_Intf_Hdr["PPJKALMT"],
+			"ID_PPJK" => $row_Intf_Hdr["PPJKID"],
+			"NAMA_PPJK" => $row_Intf_Hdr["PPJKNAMA"],
+			"NPPPJK" => $row_Intf_Hdr["PPJKNO"],
+			"TANGGAL_NPPPJK" => $row_Intf_Hdr["PPJKTG"],
+			"NOMOR_IJIN_TPB" => $row_Intf_Hdr["REGISTRASI"],
+			"TANGGAL_TTD" => $row_Intf_Hdr["TANGGAL_TTD"],
+			"KODE_TUJUAN_TPB" => $row_Intf_Hdr["TUJUAN"],
+			"ALAMAT_PENGUSAHA" => $row_Intf_Hdr["USAHAALMT"],
+			"ID_PENGUSAHA" => $row_Intf_Hdr["USAHAID"],
+			"NAMA_PENGUSAHA" => $row_Intf_Hdr["USAHANAMA"],
+			"KODE_ID_PENGUSAHA" => $row_Intf_Hdr["USAHANPWP"],
+			"KODE_STATUS_PENGUSAHA" => $row_Intf_Hdr["USAHASTATUS"],
     	];
+
+    	$insertDataHdr[] = insertRefernce('tpb_header', $data_Tpb_Hdr, "TPB", false, "Y");
+		$tpb_hdr_id = $insertDataHdr[0]["last_id"];
+
+    	// INSERT DETAIL ON TPB
+		$sql_Intf_Dtl = "SELECT * FROM t_bc23dtl WHERE CAR = '$CAR'";
+		$data_Intf_Dtl = $db->query($sql_Intf_Dtl);
+		while($row_Intf_Dtl = $data_Intf_Dtl->fetch_assoc()){
+			$data_Tpb_Dtl = [
+				"ASURANSI" => $row_Intf_Dtl["ASURANSI"],
+				"KODE_NEGARA_ASAL" => $row_Intf_Dtl["BRGASAL"],
+				"URAIAN" => $row_Intf_Dtl["BRGURAI"],
+				"CIF" => $row_Intf_Dtl["DCIF"],
+				"CIF_RUPIAH" => $row_Intf_Dtl["DCIFRP"],
+				"DISKON" => $row_Intf_Dtl["DISKON"],
+				"HARGA_INVOICE" => $row_Intf_Dtl["DNILINV"],
+				"FOB" => $row_Intf_Dtl["FOB"],
+				"FREIGHT" => $row_Intf_Dtl["FREIGHT"],
+				"HARGA_SATUAN" => $row_Intf_Dtl["HRGSAT"],
+				"JUMLAH_SATUAN" => $row_Intf_Dtl["JMLSAT"],
+				"KODE_BARANG" => $row_Intf_Dtl["KDBRG"],
+				"KODE_FASILITAS_DOKUMEN" => $row_Intf_Dtl["KDFASDTL"],
+				"KODE_SATUAN" => $row_Intf_Dtl["KDSAT"],
+				"KODE_KEMASAN" => $row_Intf_Dtl["KDSKEMATARIF"],
+				"JUMLAH_KEMASAN" => $row_Intf_Dtl["KEMASJM"],
+				"JENIS_KENDARAAN" => $row_Intf_Dtl["KEMASJN"],
+				"MERK" => $row_Intf_Dtl["MERK"],
+				"NETTO" => $row_Intf_Dtl["NETTODTL"],
+				"SERI_BARANG" => $row_Intf_Dtl["SERIAL"],
+				"SERI_POS_TARIF" => $row_Intf_Dtl["SERITRP"],
+				"SPESIFIKASI_LAIN" => $row_Intf_Dtl["SPFLAIN"],
+				"TIPE" => $row_Intf_Dtl["TIPE"],
+				"ID_HEADER" => $tpb_hdr_id,
+			];
+    		
+    		$insertDataDtl = insertRefernce('tpb_barang', $data_Tpb_Dtl, "TPB", false, "Y");
+    		$insertDataHdr[] = $insertDataDtl;
+			$tpb_dtl_id = $insertDataDtl["last_id"];
+
+    		// INSERT DETAIL DOCUMENT ON TPB
+			$sql_Intf_DtlDok = "SELECT * FROM t_bc23dtldok WHERE CAR = '$CAR' AND SERIBRG = $row_Intf_Dtl['SERIAL'] ";
+			$data_Intf_DtlDok = $db->query($sql_Intf_DtlDok);
+			while($row_Intf_DtlDok = $data_Intf_DtlDok->fetch_assoc()){
+
+				$data_Tpb_DtlDok = [
+					"SERI_DOKUMEN" => $row_Intf_DtlDok["SERIBRG"],
+					"ID_BARANG" => $tpb_dtl_id,
+					"ID_HEADER" => $tpb_hdr_id,
+				];
+			}
+
+	    	$insertDataHdr[] = insertRefernce('tpb_barang_dokumen', $data_Tpb_Con, "TPB");
+		}
+
+
+
+		// INSERT CONTAINER ON TPB
+		$sql_Intf_Con = "SELECT * FROM t_bc23con WHERE CAR = '$CAR'";
+		$data_Intf_Con = $db->query($sql_Intf_Con);
+		while($row_Intf_Con = $data_Intf_Con->fetch_assoc()){
+			$data_Tpb_Con = [
+				"NOMOR_KONTAINER" => $row_Intf_Con["CONTNO"],
+				"KODE_TIPE_KONTAINER" => $row_Intf_Con["CONTTIPE"],
+				"KODE_UKURAN_KONTAINER" => $row_Intf_Con["CONTUKUR"],
+				"KETERANGAN" => $row_Intf_Con["KETERANGAN"],
+				"ID_HEADER" => $tpb_hdr_id,
+			];
+    		$insertDataHdr[] = insertRefernce('tpb_kontainer', $data_Tpb_Con, "TPB");
+		}
+
+
+
+    	// INSERT DOCUMENT ON TPB
+		$sql_Intf_Dok = "SELECT * FROM t_bc23dok WHERE CAR = '$CAR'";
+		$data_Intf_Dok = $db->query($sql_Intf_Dok);
+		while($row_Intf_Dok = $data_Intf_Dok->fetch_assoc()){
+			$data_Tpb_Dok = [
+				"KODE_JENIS_DOKUMEN" => $row_Intf_Dok["DOKKD"],
+				"NOMOR_DOKUMEN" => $row_Intf_Dok["DOKNO"],
+				"TANGGAL_DOKUMEN" => $row_Intf_Dok["DOKTG"],
+				"SERI_DOKUMEN" => $row_Intf_Dok["SERIDOK"],
+				"ID_HEADER" => $tpb_hdr_id,
+			];
+    		$insertDataHdr[] = insertRefernce('tpb_dokumen', $data_Tpb_Dok, "TPB");
+		}
+
+
+    	// INSERT KEMASAN ON TPB
+		$sql_Intf_Kms = "SELECT * FROM t_bc23kms WHERE CAR = '$CAR'";
+		$data_Intf_Kms = $db->query($sql_Intf_Kms);
+		while($row_Intf_Kms = $data_Intf_Kms->fetch_assoc()){
+			$data_Tpb_Kms = [
+				"KODE_JENIS_KEMASAN" => $row_Intf_Kms["JNKEMAS"],
+				"JUMLAH_KEMASAN" => $row_Intf_Kms["JMKEMAS"],
+				"MERK_KEMASAN" => $row_Intf_Kms["DOKTMERKKEMAS"],
+				"ID_HEADER" => $tpb_hdr_id,
+			];
+    		$insertDataHdr[] = insertRefernce('tpb_kemasan', $data_Tpb_Kms, "TPB");
+		}
+
+
+		// INSERT PUNGUTAN ON TPB
+		$sql_Intf_Pgt = "SELECT * FROM t_bc23pgt WHERE CAR = '$CAR'";
+		$data_Intf_Pgt = $db->query($sql_Intf_Pgt);
+		while($row_Intf_Pgt = $data_Intf_Pgt->fetch_assoc()){
+			$data_Tpb_Pgt = [
+				"JENIS_TARIF" => $row_Intf_Pgt["KDBEBAN"],
+				"KODE_FASILITAS" => $row_Intf_Pgt["KDFASIL"],
+				"NILAI_PUNGUTAN" => $row_Intf_Pgt["NILBEBAN"],
+				"ID_HEADER" => $tpb_hdr_id,
+			];
+    		$insertDataHdr[] = insertRefernce('tpb_pungutan', $data_Tpb_Pgt, "TPB");
+		}
+
     }
 }
