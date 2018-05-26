@@ -2,7 +2,7 @@
 error_reporting(E_ALL & ~E_NOTICE);
 libxml_use_internal_errors(true);
 
-function insertRefernce($table, $arrData, $allField = false){
+function insertRefernce($table, $arrData, $allField = false, $set_last_id = ""){
     global $db;
 
     $arrData = array_change_key_case($arrData,CASE_UPPER);
@@ -84,6 +84,7 @@ function insertRefernce($table, $arrData, $allField = false){
 
     foreach($whrTBL as $key => $value) $dataWhere[] = "$key = $value";
     $dataWhere = implode(" AND ", $dataWhere);
+    $last_id = 0;
 
     $sqlCek = "SELECT * FROM $table WHERE " . $dataWhere;
     $datCek = $db->query($sqlCek);
@@ -93,6 +94,7 @@ function insertRefernce($table, $arrData, $allField = false){
 
         $sqlIns = "INSERT INTO $table ($columns) VALUES ($values)";
         $exec = $db->query($sqlIns);
+        if($set_last_id != "") $last_id = $db->insert_id;
         
     } else {
         // $data = array_diff($data, $whrTBL);
@@ -102,13 +104,13 @@ function insertRefernce($table, $arrData, $allField = false){
         $sqlUpd = "UPDATE $table SET $dataUpd WHERE " . $dataWhere;
         // return $sqlUpd;
         $exec = $db->query($sqlUpd);
-        
+        $last_id = "";
     }
     
     if($exec){
-        return [$table => true];
+        return [$table => true, "last_id" => $last_id];
     }else{
-        return [$table => false];
+        return [$table => false, "last_id" => $last_id];
     }
 }
 
