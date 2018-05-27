@@ -168,6 +168,14 @@ function getResult($sql)
     return $data;
 }
 
+function delete($sql)
+{
+    global $db;
+    
+    $result = $db->query($sql);
+    return $result;
+}
+
 function findArr2Str($str,$arr){
     $hasil = false;
     foreach($arr as $a){
@@ -177,4 +185,57 @@ function findArr2Str($str,$arr){
         }
     }
     return $hasil;
+}
+
+function getdata($type, $keyword)
+{
+    global $db;
+    
+    switch ($type) {
+        case 'pelabuhan':
+            $sql = "SELECT URAIAN FROM TM_PELABUHAN WHERE KODE = '".$keyword."'";
+            break;
+        default:
+            # code...
+            break;
+    }
+
+    $result = $db->query($sql);
+
+    $data = [];
+
+    if($result->num_rows > 0)
+    {
+        while ($row = $result->fetch_assoc())
+        {
+            $data[] = $row;
+        }   
+    }
+    
+    return $data;
+}
+
+function sqlUpdate($table, $data, $dataWhere)
+{
+    global $db;
+
+    foreach($whrTBL as $key => $value) $dataWhere[] = "$key = $value";
+    $dataWhere = implode(" AND ", $dataWhere);
+    
+    foreach($data as $key => $value) $dataUpd[] = "$key=$value";
+    $dataUpd = implode(", ", $dataUpd);
+
+    $sqlUpd = "UPDATE $table SET $dataUpd WHERE " . $dataWhere;
+    $exec = $db->query($sqlUpd);
+    
+    if($exec){
+        return [$table => true];
+    }else{
+        return [$table => false];
+    }
+}
+
+function ceiling($number, $significance = 1)
+{
+    return ( is_numeric($number) && is_numeric($significance) ) ? (ceil($number/$significance)*$significance) : false;
 }

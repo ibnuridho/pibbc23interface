@@ -2,6 +2,7 @@
     
     include('lib/database.php');
     include('lib/main.php');
+    include('tax_calculation.php');
     
 	validate();
 	
@@ -21,14 +22,13 @@
 		return $data;
 	}
 
-	function validationDataDtl($car, $kode_trader, $serial)
+	function validationDataDtl($car, $serial)
 	{
-		$returndata = [];
-        $sql = "SELECT  *, a.SERIAL "
-                . " FROM    t_bc20dtl a
+        $sql = "SELECT  *, a.SERIAL
+                    FROM t_bc20dtl a
                     Left Join t_bc20fas b ON a.KODE_TRADER = b.KODE_TRADER AND a.CAR = b.CAR AND a.SERIAL = b.SERIAL
-                    Left Join t_bc20trf c ON a.KODE_TRADER = c.KODE_TRADER AND a.CAR = c.CAR AND a.NOHS = c.NOHS AND a.SERITRP = c.SERITRP "
-                . " WHERE A.CAR = '" . $car . "' AND (A.KODE_TRADER = '" . $kode_trader . "') AND A.SERIAL = '" . $serial . "'";
+                    Left Join t_bc20trf c ON a.KODE_TRADER = c.KODE_TRADER AND a.CAR = c.CAR AND a.NOHS = c.NOHS AND a.SERITRP = c.SERITRP
+                    WHERE A.CAR = '" . $car . "' AND A.SERIAL = '" . $serial . "'";
         
         $data['DETIL'] = getResult($sql)[0];
         return $data;
@@ -36,11 +36,16 @@
     // =========== End Validation Data =========== //
 
 	function validate()
-	{
-		$request = (object)validationData();
-		// print_r($request->HEADER['CAR']);exit();
+    {
+        $errors = [];
+        $request = (object)validationData();
+        // print_r($request->HEADER);exit();
 
-		//status importir maksimal 2
+        $result = validateHeaderMandatory($request);
+        if($result)
+            $errors = $result;
+
+        //status importir maksimal 2
         if (strlen($request->HEADER["IMPSTATUS"]) > 2)
             $errors[] = "Status importir maksimal = 2";
 
@@ -49,12 +54,13 @@
             $errors[] = "Jumlah Barang Tidak Boleh Negatif";
 
         //jika kode API isi status harus diisi
-        if ($request->HEADER['APIKD'] == '' || $request->HEADER['APINO'] == '') {
+        if ($request->HEADER['APIKD'] == '' || $request->HEADER['APINO'] == '')
+        {
             $request->HEADER['APIKD'] = '';
             $request->HEADER['APINO'] = '';
         }
         if ($request->HEADER['APIKD'] != '' && $request->HEADER['IMPSTATUS'] == '')
-                $errors[] = "Status Importir harus diisi";
+            $errors[] = "Status Importir harus diisi";
 
         //jika impor sementara maka jangkawaktu harus diisi
         if ($request->HEADER['JNIMP'] == '2' && (int) $request->HEADER['JKWAKTU'] <= 0)
@@ -97,11 +103,12 @@
         $dok['BPJ'] = findArr2Str($strdok, array('994'));
         $dok['STTJ'] = findArr2Str($strdok, array('997'));
         $dok['COO'] = findArr2Str($strdok, array('861'));
+        $dok['NPWP'] = findArr2Str($strdok, array('450'));
 
         if($request->HEADER['KDFAS'])
-        	$request->HEADER['KDFAS'] = $request->HEADER['KDFAS'];
-    	else
-    		$request->HEADER['KDFAS'] = null;
+            $request->HEADER['KDFAS'] = $request->HEADER['KDFAS'];
+        else
+            $request->HEADER['KDFAS'] = null;
 
         //Invoice
         if (!$dok['INVOICE'])
@@ -113,11 +120,24 @@
         if (!$dok['AWB'] && $request->HEADER['MODA'] == '4')
             $errors[] = "Dokumen AWB tidak ada [Angkutan Udara]";
         //COO
-        if (!$dok['COO'] && strstr('|06|54|55|56|57|58|', $request->HEADER['KDFAS']))
+        if (!$dok['COO'] && strstr('06|54|55|56|57|58', $request->HEADER['KDFAS']))
             $errors[] = "Ada fasilitas ' . {$request->HEADER['KDFAS']} . ' tetapi belum mengisi Dokumen SKA/COO [kode 861]";
         //SKEP
-        if (!$dok['SKEP'] && trim($request->HEADER['KDFAS']) != '' && !strstr('06|54|55|56|57|58', $request->HEADER['KDFAS']))
+        if (!$dok['SKEP'] && trim($request->HEADER['KDFAS']) != '' && !strstr('06|54|55|56|57|58|70', $request->HEADER['KDFAS']))
             $errors[] = "Ada fasilitas ' . {$request->HEADER['KDFAS']} . ' tetapi belum mengisi Dokumen Skep [kode 814, 815, 851, 853, 911, 912, 913, 993, 998]";
+        
+        //NPWP
+        if($request->HEADER['IMPID'] == '0' && strlen(str_replace('.', '', str_replace('-', '', $request->HEADER['IMPNPWP']))) != 12)
+            $errors[] = "Pengisian Identitas + NPWP Importir salah [12 digit]";
+
+        if($request->HEADER['IMPID'] == '1' && strlen(str_replace('.', '', str_replace('-', '', $request->HEADER['IMPNPWP']))) != 11)
+            $errors[] = "Pengisian Identitas + NPWP Importir salah [11 digit]";
+
+        if($request->HEADER['IMPID'] == '5' && strlen(str_replace('.', '', str_replace('-', '', $request->HEADER['IMPNPWP']))) != 15)
+            $errors[] = "Pengisian Identitas + NPWP Importir salah [15 digit]";
+        
+        if (!$dok['NPWP'] && strstr('|70|', $request->HEADER['KDFAS']))
+            $errors[] = "Ada Pemilik Barang tetapi belum mengisi NPWP [kode 450]";
 
         //cek isian kemasan
         $querykms = "SELECT COUNT(CAR) as jml FROM t_bc20kms WHERE CAR = '" . $request->HEADER['CAR'] . "' AND KODE_TRADER = " . $request->HEADER['KODE_TRADER'];
@@ -133,122 +153,115 @@
             if ($jmlgdg <= 0 && $request->HEADER['TMPTBN'] != '-')
                 $errors[] = "Kode gudang " . $request->HEADER['TMPTBN'] . " tidak ada di kantor " . $request->HEADER['KDKPBC'];
         }
-
-        //Cek User
-        // if (!strpos("|020|030|040|080|082|084|086|087|088|090|100|102|105|110|112|114|116|120|150|", $request->HEADER['STATUS']))
-        // {
-        //     if ($tipe_trader == '1')
-        //     { //Importir
-        //         $request->HEADER['IMPID'] = $strtrader['KODE_ID'];
-        //         $request->HEADER['IMPNPWP'] = $strtrader['ID'];
-        //         $request->HEADER['IMPNAMA'] = $strtrader['NAMA'];
-        //         $request->HEADER['IMPALMT'] = $strtrader['ALAMAT'];
-
-        //         $request->HEADER['PPJKID'] = '';
-        //         $request->HEADER['PPJKNPWP'] = '';
-        //         $request->HEADER['PPJKNAMA'] = '';
-        //         $request->HEADER['PPJKALMT'] = '';
-        //         $request->HEADER['PPJKNO'] = '';
-        //         $request->HEADER['PPJKTG'] = NULL;
-        //     }
-        //     elseif ($tipe_trader == '4')
-        //     {
-        //         $request->HEADER['PPJKID'] = $strtrader['KODE_ID'];
-        //         $request->HEADER['PPJKNPWP'] = $strtrader['ID'];
-        //         $request->HEADER['PPJKNAMA'] = $strtrader['NAMA'];
-        //         $request->HEADER['PPJKALMT'] = $strtrader['ALAMAT'];
-        //         $request->HEADER['PPJKNO'] = $strtrader['NO_PPJK'];
-        //         $request->HEADER['PPJKTG'] = $strtrader['TANGGAL_PPJK'];
-        //     }
-        //     else
-        //     {
-        //         $errors[] = "Tipe user yang anda gunakan tidak sesuai dengan dokumen yang anda entry";
-        //     }
-        // }
-
-        //validasi Fasilitas Detil
+        //validasi Fasilitas Header Detil
         $fasdtlsql = "SELECT COUNT(1) CNTFASDTL FROM t_bc20dtldok WHERE CAR = '" . $request->HEADER['CAR'] . "' AND KODE_TRADER = " . $request->HEADER['KODE_TRADER'];
         $cntfasdtl = getResult($fasdtlsql)[0]['CNTFASDTL'];
+        //validasi Fasilitas Header
+        if (strlen($request->HEADER['KDFAS']) < 1 && $cntfasdtl > 0)
+            $errors[] = "Jenis fasilitas di Header belum diisi";
+        //validasi Fasilitas Detil
         if (strlen($request->HEADER['KDFAS']) > 0 && $cntfasdtl < 1)
             $errors[] = "Jenis fasilitas di Detil belum diisi";
 
         $dnilinvsql = "SELECT SUM(a.DNILINV) DNILINV FROM t_bc20dtl a WHERE a.CAR = '" . $request->HEADER['CAR'] . "' AND KODE_TRADER = " . $request->HEADER['KODE_TRADER'];
         $dnilinv = getResult($dnilinvsql)[0]['DNILINV'];
-        if (($request->HEADER["NILINV"] + ($request->HEADER["NILVD"] > 0 ? $request->HEADER["NILVD"] : 0)) != (int) $dnilinv) {
+        if (round(($request->HEADER["NILINV"] + ($request->HEADER["NILVD"] > 0 ? $request->HEADER["NILVD"] : 0)), 2) != (float) $dnilinv) {
             // if (abs($request->HEADER['NILINV'] - $dnilinv) > 1) {
-                $errors[] = "Harga Header = " . ($request->HEADER["NILINV"] + ($request->HEADER["NILVD"] > 0 ? $request->HEADER["NILVD"] : 0)) . ", Harga Detil = " . (int) $dnilinv;
+                $errors[] = "Harga Header = " . ($request->HEADER["NILINV"] + ($request->HEADER["NILVD"] > 0 ? $request->HEADER["NILVD"] : 0)) . ", Harga Detil = " . (float) $dnilinv;
             // }
         }
 
         //Get Pungutan
-        // $gettax = $this->repo->gettax($request->HEADER['CAR']);
-        // if(!$gettax)
-        //     $errors[] = "Proses penghitungan pungutan gagal";
+        $gettax = get_bc20_tax($request->HEADER['CAR']);
+        if($gettax == 'failed')
+            $errors[] = "Proses penghitungan pungutan gagal";
         
         //pernyataan
         if ($request->HEADER["PERNYATAAN"] != "1")
             $errors[] = "Anda belum menyetujui kolom pernyataan";
 
         //Validasi Detil
-        $resultvalverb = "";
-        $detilsql = "SELECT SERIAL FROM T_BC20DTL WHERE CAR = '" . $request->HEADER['CAR'] . "' AND KODE_TRADER = " . $request->HEADER['KODE_TRADER'];
+        $detilsql = "SELECT SERIAL FROM T_BC20DTL WHERE CAR = '" . $request->HEADER['CAR'] . "'";
         $detildata = getResult($detilsql);
         
         for($i = 0; $i < count($detildata); $i++)
         {
             $serialverb = $detildata[$i]['SERIAL'];
-            $failedserial = validateDtl($request->HEADER['CAR'], $request->HEADER['KODE_TRADER'], $serialverb);
+            $failedserial = validateDtl($request->HEADER['CAR'], $serialverb);
             if($failedserial)
-            	$errors[] = $failedserial;
-            // if($failedserial != "")
-            //     $resultvalverb .= "," . $failedserial;
+                $errors[] = $failedserial;
         }
 
-        // $detilerrors = explode(',', substr($resultvalverb, 1));
-        // foreach ($detilerrors as $detilerror)
-        // {
-        //     $detilerror = rtrim(ltrim($detilerror));
-        //     if($detilerror != '')
-        //         $errors[] = "Pengisian Detil ke-" . $detilerror . " belum benar";
-        // }
-
-        // return count($errors) > 0 ? $errors : false;
-
-        $string = "<b>Validasi Header</b><br>"; 
-        foreach ($errors as $value)
+        if(count($errors) > 0)
         {
-        	if(!is_array($value))
-        	{
-        		$string .= "- " . $value . "<br>";
-        	}
-        }
+            $dataUp = ['STATUS' => 'INV'];
+            $where = ['CAR' => $request->HEADER['CAR']];
+            sqlUpdate('T_BC20HDR', $dataUp, $where);
 
-        $string .= "<b>Validasi Detil</b><br>"; 
-        foreach ($errors as $value)
+            $string = "Validasi Header\n"; 
+            foreach ($errors as $value)
+            {
+                if(!is_array($value))
+                {
+                    $string .= "- " . $value . "\n";
+                }
+            }
+
+            $string .= "Validasi Detil\n"; 
+            foreach ($errors as $value)
+            {
+                if(is_array($value))
+                {
+                    if(count($value) > 0)
+                    {
+                        foreach($value as $key => $val)
+                        {
+                            $string .= "Seri ke - " . $key . "\n";
+                            foreach($val as $v)
+                            {
+                                $string .= "- " . $v . "\n";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else
         {
-        	if(is_array($value))
-        	{
-        		if(count($value) > 0)
-        		{
-	        		foreach($value as $key => $val)
-	        		{
-	        			$string .= "Seri ke - " . $key . "<br>";
-	        			foreach($val as $v)
-	        			{
-	        				$string .= "- " . $v . "<br>";
-	        			}
-	        		}
-        		}
-        	}
+            $dataUp = ['STATUS' => '010'];
+            $where = ['CAR' => $request->HEADER['CAR']];
+            sqlUpdate('T_BC20HDR', $dataUp, $where);
+            $string = 'Valid';
         }
 
+
+        $dataHslVal = [
+            'KODE_TRADER' =>  '1',
+            'CAR' =>  $request->HEADER['CAR'],
+            'VALIDASI' =>  $string,
+        ];
+        insertRefernce('T_BC20HASILVAL', $dataHslVal);
+
+        $dataLogVal = [
+            'CAR' =>  $request->HEADER['CAR'],
+            'ACTION_NAME' =>  'VALIDATION',
+            'DESCRIPTION' =>  $string,
+            'USERNAME' =>  0,
+            'CREATED_BY' =>  0,
+        ];
+        
+        insertRefernce('T_BC20LOG', $dataLogVal);
         print_r($string);
-	}
+    }
 
-	function validateDtl($car, $kode_trader, $serial)
+	function validateDtl($car, $serial)
     {
-        $request = (object)validationDataDtl($car, $kode_trader, $serial);
         $errors = [];
+        $request = (object)validationDataDtl($car, $serial);
+
+        $result = validateDetailMandatory($request);
+        if($result)
+            $errors = $result;
 
         //Cek Panjang HS
         if (!(strlen($request->DETIL['NOHS']) == 8) && !(strlen($request->DETIL['NOHS']) == 10))
@@ -271,7 +284,7 @@
         //Cek jika kode jenis Fasilitas ada tapi Data Fasilitas kosong
         $queryfas = "SELECT COUNT(1) AS jml FROM t_bc20dtldok WHERE LENGTH(KdFasDtl) > 0 AND KdFasDtl != 'Y' AND Serial = '" . $request->DETIL['SERIAL'] . "' AND CAR = '" . $request->DETIL['CAR'] . "' AND KODE_TRADER = " . $request->DETIL['KODE_TRADER'];
         $jmlfas = getResult($queryfas)[0]['jml'];
-        if ($request->DETIL['KDFASBM'] != '' && $jmlfas < 1)
+        if (trim($request->DETIL['KDFASBM']," ") != '' && $jmlfas < 1)
         {
             $errors[] = "Jenis fasilitas belum diisi";
         }
@@ -306,9 +319,93 @@
         
         $result = false;
         if(count($errors) > 0)
-        	$result = array($serial => $errors);
+            $result = array($serial => $errors);
         
         return $result;
 
         // return count($errors) > 0 ? $errors : false;
+    }
+
+    function validateHeaderMandatory($request)
+    {
+        $errors = [];
+        if(!$request->HEADER['KDKPBC'])
+            $errors[] = 'Kode Kantor BC Harus Diisi';
+        if(!$request->HEADER['PELBKR'])
+            $errors[] = 'Pelabuhan Bongkar Harus Diisi';
+        if(!$request->HEADER['JNPIB'])
+            $errors[] = 'Jenis PIB Harus Diisi';
+        if(!$request->HEADER['JNIMP'])
+            $errors[] = 'Jenis Impor Harus Diisi';
+        if(!$request->HEADER['IMPID'])
+            $errors[] = 'Jenis Identitas Importir Harus Diisi';
+        if(!$request->HEADER['IMPNPWP'])
+            $errors[] = 'Nomor Identitas Importir Harus Diisi';
+        if(!$request->HEADER['IMPNAMA'])
+            $errors[] = 'Nama Importir Harus Diisi';
+        if(!$request->HEADER['IMPALMT'])
+            $errors[] = 'Alamat Importir Harus Diisi';
+        if(!$request->HEADER['PPJKID'])
+            $errors[] = 'Jenis Identitas PPJK Harus Diisi';
+        if(!$request->HEADER['PPJKNPWP'])
+            $errors[] = 'Nomor Identitas PPJK Harus Diisi';
+        if(!$request->HEADER['PPJKNAMA'])
+            $errors[] = 'Nama PPJK Harus Diisi';
+        if(!$request->HEADER['PPJKALMT'])
+            $errors[] = 'Alamat PPJK Harus Diisi';
+        if(!$request->HEADER['PASOKNAMA'])
+            $errors[] = 'Nama Pemasok Harus Diisi';
+        if(!$request->HEADER['PASOKALMT'])
+            $errors[] = 'Alamat Pemasok Harus Diisi';
+        if(!$request->HEADER['PASOKNEG'])
+            $errors[] = 'Negara Pemasok Harus Diisi';
+        if(!$request->HEADER['PELMUAT'])
+            $errors[] = 'Pelabuhan Muat Harus Diisi';
+        if(!$request->HEADER['MODA'])
+            $errors[] = 'Alat Transportasi Harus Diisi';
+        if(!$request->HEADER['ANGKUTNAMA'])
+            $errors[] = 'Nama Alat Angkut Harus Diisi';
+        if(!$request->HEADER['ANGKUTNO'])
+            $errors[] = 'Nomor Voy/Flight Harus Diisi';
+        if(!$request->HEADER['TGTIBA'])
+            $errors[] = 'Tanggal Tiba Harus Diisi';
+        if(!$request->HEADER['KDVAL'])
+            $errors[] = 'Kode Valuta Harus Diisi';
+        if(!$request->HEADER['NDPBM'])
+            $errors[] = 'NDPBM Harus Diisi';
+        if(!$request->HEADER['KDHRG'])
+            $errors[] = 'Kode Harga Harus Diisi';
+        if(!$request->HEADER['BRUTO'])
+            $errors[] = 'Berat Bruto Harus Diisi';
+        if(!$request->HEADER['NETTO'])
+            $errors[] = 'Berat Netto Harus Diisi';
+        if(!$request->HEADER['JMBRG'])
+            $errors[] = 'Jumlah Barang Harus Diisi';
+
+        return $errors;
+    }
+
+    function validateDetailMandatory($request)
+    {
+        $errors = [];
+        if(!$request->DETIL['SERIAL'])
+            $errors[] = 'Seri barang Harus Diisi';
+        if(!$request->DETIL['NOHS'])
+            $errors[] = 'Nomor HS Harus Diisi';
+        if(!$request->DETIL['BRGURAI'])
+            $errors[] = 'Uraian Barang Harus Diisi';
+        if(!$request->DETIL['BRGASAL'])
+            $errors[] = 'Negara Asal Barang Harus Diisi';
+        if(!$request->DETIL['KDSAT'])
+            $errors[] = 'Kode Satuan Harus Diisi';
+        if(!$request->DETIL['JMLSAT'])
+            $errors[] = 'Jumlah Satuan Harus Diisi';
+        if(!$request->DETIL['KEMASJN'])
+            $errors[] = 'Jenis Pengemas Harus Diisi';
+        if(!$request->DETIL['CRBYR'])
+            $errors[] = 'Cara Pembayaran Harus Diisi';
+        if(!$request->DETIL['CIF'])
+            $errors[] = 'Harga CIF Harus Diisi';
+
+        return $errors;
     }
