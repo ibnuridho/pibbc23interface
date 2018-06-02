@@ -114,6 +114,7 @@ while($row_Intf_Hdr = $data_Intf_Hdr->fetch_assoc()){
     		$insertDataHdr[] = $insertDataDtl;
 			$tpb_dtl_id = $insertDataDtl["last_id"];
 
+    		
     		// INSERT DETAIL DOCUMENT ON TPB
 			$sql_Intf_DtlDok = "SELECT * FROM t_bc23dtldok WHERE CAR = '$CAR' AND SERIBRG = $row_Intf_Dtl['SERIAL'] ";
 			$data_Intf_DtlDok = $db->query($sql_Intf_DtlDok);
@@ -124,9 +125,51 @@ while($row_Intf_Hdr = $data_Intf_Hdr->fetch_assoc()){
 					"ID_BARANG" => $tpb_dtl_id,
 					"ID_HEADER" => $tpb_hdr_id,
 				];
+	    		$insertDataHdr[] = insertRefernce('tpb_barang_dokumen', $data_Tpb_DtlDok, "TPB");
 			}
 
-	    	$insertDataHdr[] = insertRefernce('tpb_barang_dokumen', $data_Tpb_Con, "TPB");
+
+			// INSERT DETIL TARIF ON TPB
+			$sql_Intf_DtlTrf = "SELECT * FROM t_bc23dtlTrf WHERE CAR = '$CAR' AND SERIBRG = $row_Intf_Dtl['SERIAL'] ";
+			$data_Intf_DtlTrf = $db->query($sql_Intf_DtlTrf);
+			while($row_Intf_DtlTrf = $data_Intf_DtlTrf->fetch_assoc()){
+
+				// INSERT BM
+				$data_Tpb_DtlTrf_BM = [
+					"JENIS_TARIF" => 'BM',
+					"KODE_TARIF" => $row_Intf_DtlTrf["KDTRPBM"],
+					"KODE_SATUAN" => $row_Intf_DtlTrf["KDSATBM"],
+					"TARIF" => $row_Intf_DtlTrf["TRPBM"],
+					"KODE_FASILITAS" => $row_Intf_DtlTrf["KDFASBM"],
+					"TARIF_FASILITAS" => $row_Intf_DtlTrf["FASBM"],
+					"ID_BARANG" => $tpb_dtl_id,
+					"ID_HEADER" => $tpb_hdr_id,
+				];
+	    		$insertDataHdr[] = insertRefernce('tpb_barang_tarif', $data_Tpb_DtlTrf_BM, "TPB");
+
+	    		// INSERT PPN
+	    		$data_Tpb_DtlTrf_PPN = [
+					"JENIS_TARIF" => 'PPN',
+					"TARIF" => $row_Intf_DtlTrf["TRPPPN"],
+					"KODE_FASILITAS" => $row_Intf_DtlTrf["KDFASPPN"],
+					"TARIF_FASILITAS" => $row_Intf_DtlTrf["FASPPN"],
+					"ID_BARANG" => $tpb_dtl_id,
+					"ID_HEADER" => $tpb_hdr_id,
+				];
+	    		$insertDataHdr[] = insertRefernce('tpb_barang_tarif', $data_Tpb_DtlTrf_PPN, "TPB");
+
+	    		// INSERT PPH
+	    		$data_Tpb_DtlTrf_PPH = [
+					"JENIS_TARIF" => 'PPH',
+					"TARIF" => $row_Intf_DtlTrf["TRPPPH"],
+					"KODE_FASILITAS" => $row_Intf_DtlTrf["KDFASPPH"],
+					"TARIF_FASILITAS" => $row_Intf_DtlTrf["FASPPH"],
+					"ID_BARANG" => $tpb_dtl_id,
+					"ID_HEADER" => $tpb_hdr_id,
+				];
+	    		$insertDataHdr[] = insertRefernce('tpb_barang_tarif', $data_Tpb_DtlTrf_PPH, "TPB");
+			}
+
 		}
 
 
@@ -177,17 +220,17 @@ while($row_Intf_Hdr = $data_Intf_Hdr->fetch_assoc()){
 
 
 		// INSERT PUNGUTAN ON TPB
-		$sql_Intf_Pgt = "SELECT * FROM t_bc23pgt WHERE CAR = '$CAR'";
-		$data_Intf_Pgt = $db->query($sql_Intf_Pgt);
-		while($row_Intf_Pgt = $data_Intf_Pgt->fetch_assoc()){
-			$data_Tpb_Pgt = [
-				"JENIS_TARIF" => $row_Intf_Pgt["KDBEBAN"],
-				"KODE_FASILITAS" => $row_Intf_Pgt["KDFASIL"],
-				"NILAI_PUNGUTAN" => $row_Intf_Pgt["NILBEBAN"],
-				"ID_HEADER" => $tpb_hdr_id,
-			];
-    		$insertDataHdr[] = insertRefernce('tpb_pungutan', $data_Tpb_Pgt, "TPB");
-		}
+		// $sql_Intf_Pgt = "SELECT * FROM t_bc23pgt WHERE CAR = '$CAR'";
+		// $data_Intf_Pgt = $db->query($sql_Intf_Pgt);
+		// while($row_Intf_Pgt = $data_Intf_Pgt->fetch_assoc()){
+		// 	$data_Tpb_Pgt = [
+		// 		"JENIS_TARIF" => $row_Intf_Pgt["KDBEBAN"],
+		// 		"KODE_FASILITAS" => $row_Intf_Pgt["KDFASIL"],
+		// 		"NILAI_PUNGUTAN" => $row_Intf_Pgt["NILBEBAN"],
+		// 		"ID_HEADER" => $tpb_hdr_id,
+		// 	];
+  //   		$insertDataHdr[] = insertRefernce('tpb_pungutan', $data_Tpb_Pgt, "TPB");
+		// }
 
     }
 }
