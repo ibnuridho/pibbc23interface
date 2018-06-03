@@ -95,14 +95,6 @@ catch (PDOException $e) {
     echo $e->getMessage();
 }
 
-$xml = "<CDOCUMENT>
-	<DOCTYPE></DOCTYPE>
-	<EDINUMBER></EDINUMBER>
-	<HEADER>
-	</HEADER>
-</CDOCUMENT>
-";
-
 $dom = new DOMDocument();
 $dom->preserveWhiteSpace = true;
 $dom->loadXML($xml);
