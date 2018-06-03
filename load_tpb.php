@@ -168,6 +168,75 @@ while($row_Intf_Hdr = $data_Intf_Hdr->fetch_assoc()){
 					"ID_HEADER" => $tpb_hdr_id,
 				];
 	    		$insertDataHdr[] = insertRefernce('tpb_barang_tarif', $data_Tpb_DtlTrf_PPH, "TPB");
+
+	    		// INSERT PPNBM
+	    		$data_Tpb_DtlTrf_PPNBM = [
+					"JENIS_TARIF" => 'PPNBM',
+					"TARIF" => $row_Intf_DtlTrf["TRPPBM"],
+					"KODE_FASILITAS" => $row_Intf_DtlTrf["KDFASPPNBM"],
+					"TARIF_FASILITAS" => $row_Intf_DtlTrf["FASPPNBM"],
+					"ID_BARANG" => $tpb_dtl_id,
+					"ID_HEADER" => $tpb_hdr_id,
+				];
+	    		$insertDataHdr[] = insertRefernce('tpb_barang_tarif', $data_Tpb_DtlTrf_PPNBM, "TPB");
+
+	    		// INSERT BMAD
+	    		$data_Tpb_DtlTrf_BMAD = [
+					"JENIS_TARIF" => 'BMAD',
+					"TARIF" => $row_Intf_DtlTrf["TRBMAD"],
+					"KODE_TARIF" => $row_Intf_DtlTrf["KDTRPBMAD"],
+					"FLAG_BMT_SEMENTARA" => $row_Intf_DtlTrf["FLBMADS"],
+					"ID_BARANG" => $tpb_dtl_id,
+					"ID_HEADER" => $tpb_hdr_id,
+				];
+	    		$insertDataHdr[] = insertRefernce('tpb_barang_tarif', $data_Tpb_DtlTrf_BMAD, "TPB");
+
+	    		// INSERT BMTP
+	    		$data_Tpb_DtlTrf_BMTP = [
+					"JENIS_TARIF" => 'BMTP',
+					"TARIF" => $row_Intf_DtlTrf["TRPBMTP"],
+					"KODE_TARIF" => $row_Intf_DtlTrf["KDTRPBMTP"],
+					"FLAG_BMT_SEMENTARA" => $row_Intf_DtlTrf["FLBMTPS"],
+					"ID_BARANG" => $tpb_dtl_id,
+					"ID_HEADER" => $tpb_hdr_id,
+				];
+	    		$insertDataHdr[] = insertRefernce('tpb_barang_tarif', $data_Tpb_DtlTrf_BMTP, "TPB");
+
+	    		// INSERT BMIM
+	    		$data_Tpb_DtlTrf_BMIM = [
+					"JENIS_TARIF" => 'BMIM',
+					"TARIF" => $row_Intf_DtlTrf["TRPBMIM"],
+					"KODE_TARIF" => $row_Intf_DtlTrf["KDTRPBMIM"],
+					"FLAG_BMT_SEMENTARA" => $row_Intf_DtlTrf["FLBIMPS"],
+					"ID_BARANG" => $tpb_dtl_id,
+					"ID_HEADER" => $tpb_hdr_id,
+				];
+	    		$insertDataHdr[] = insertRefernce('tpb_barang_tarif', $data_Tpb_DtlTrf_BMIM, "TPB");
+
+	    		// INSERT BMPB
+	    		$data_Tpb_DtlTrf_BMPB = [
+					"JENIS_TARIF" => 'BMPB',
+					"TARIF" => $row_Intf_DtlTrf["TRPBMPB"],
+					"KODE_TARIF" => $row_Intf_DtlTrf["KDTRPBMPB"],
+					"FLAG_BMT_SEMENTARA" => $row_Intf_DtlTrf["FLBMPBS"],
+					"ID_BARANG" => $tpb_dtl_id,
+					"ID_HEADER" => $tpb_hdr_id,
+				];
+	    		$insertDataHdr[] = insertRefernce('tpb_barang_tarif', $data_Tpb_DtlTrf_BMPB, "TPB");
+
+	    		// INSERT CUKAI
+	    		$data_Tpb_DtlTrf_Cuk = [
+					"JENIS_TARIF" => 'BMPB',
+					"KODE_KOMODITI_CUKAI" => $row_Intf_DtlTrf["KDCUK"],
+					"TARIF" => $row_Intf_DtlTrf["TRPCUK"],
+					"KODE_TARIF" => $row_Intf_DtlTrf["KDTRPCUK"],
+					"KODE_FASILITAS" => $row_Intf_DtlTrf["KDFASCUK"],
+					"TARIF_FASILITAS" => $row_Intf_DtlTrf["FASCUK"],
+					"KODE_SATUAN" => $row_Intf_DtlTrf["KDSATCUK"],
+					"ID_BARANG" => $tpb_dtl_id,
+					"ID_HEADER" => $tpb_hdr_id,
+				];
+	    		$insertDataHdr[] = insertRefernce('tpb_barang_tarif', $data_Tpb_DtlTrf_Cuk, "TPB");
 			}
 
 		}
@@ -220,17 +289,17 @@ while($row_Intf_Hdr = $data_Intf_Hdr->fetch_assoc()){
 
 
 		// INSERT PUNGUTAN ON TPB
-		// $sql_Intf_Pgt = "SELECT * FROM t_bc23pgt WHERE CAR = '$CAR'";
-		// $data_Intf_Pgt = $db->query($sql_Intf_Pgt);
-		// while($row_Intf_Pgt = $data_Intf_Pgt->fetch_assoc()){
-		// 	$data_Tpb_Pgt = [
-		// 		"JENIS_TARIF" => $row_Intf_Pgt["KDBEBAN"],
-		// 		"KODE_FASILITAS" => $row_Intf_Pgt["KDFASIL"],
-		// 		"NILAI_PUNGUTAN" => $row_Intf_Pgt["NILBEBAN"],
-		// 		"ID_HEADER" => $tpb_hdr_id,
-		// 	];
-  //   		$insertDataHdr[] = insertRefernce('tpb_pungutan', $data_Tpb_Pgt, "TPB");
-		// }
+		$sql_Intf_Pgt = "SELECT * FROM t_bc23pgt WHERE CAR = '$CAR'";
+		$data_Intf_Pgt = $db->query($sql_Intf_Pgt);
+		while($row_Intf_Pgt = $data_Intf_Pgt->fetch_assoc()){
+			$data_Tpb_Pgt = [
+				"JENIS_TARIF" => $row_Intf_Pgt["KDBEBAN"],
+				"KODE_FASILITAS" => $row_Intf_Pgt["KDFASIL"],
+				"NILAI_PUNGUTAN" => $row_Intf_Pgt["NILBEBAN"],
+				"ID_HEADER" => $tpb_hdr_id,
+			];
+    		$insertDataHdr[] = insertRefernce('tpb_pungutan', $data_Tpb_Pgt, "TPB");
+		}
 
     }
 }
