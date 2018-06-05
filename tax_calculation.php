@@ -2,30 +2,6 @@
 	
 	function get_bc20_tax($car, $kode_trader = 1)
     {
-    	// $arrDataDtl = DB::table('t_bc20dtl as DTL')
-    	// 					->leftjoin('t_bc20fas as FAS', function($join){
-    	// 						$join->on('DTL.KODE_TRADER', '=', 'FAS.KODE_TRADER');
-    	// 						$join->on('DTL.CAR', '=', 'FAS.CAR');
-    	// 						$join->on('DTL.SERIAL', '=', 'FAS.SERIAL');
-    	// 					})
-    	// 					->leftjoin('t_bc20trf as TRF', function($join){
-    	// 						$join->on('DTL.KODE_TRADER', '=', 'TRF.KODE_TRADER');
-    	// 						$join->on('DTL.CAR', '=', 'TRF.CAR');
-    	// 						$join->on('DTL.NOHS', '=', 'TRF.NOHS');
-    	// 						$join->on('DTL.SERITRP', '=', 'TRF.SERITRP');
-    	// 					})
-    	// 					->leftjoin('t_bc20dtldok as DTLDOK', function($join){
-    	// 						$join->on('DTL.KODE_TRADER', '=', 'DTLDOK.KODE_TRADER');
-    	// 						$join->on('DTL.CAR', '=', 'DTLDOK.CAR');
-    	// 						$join->on('DTL.SERIAL', '=', 'DTLDOK.SERIAL');
-    	// 					})
-    	// 					->where('DTL.KODE_TRADER', '=', $kode_trader)
-    	// 					->where('DTL.CAR', '=', $car)
-    	// 					->select('*', DB::raw('GROUP_CONCAT(DTLDOK.KDFASDTL) as KDFASDTLDOK'))
-    	// 					->groupBy('DTL.SERIAL')
-    	// 					->get();
-
-
     	$sqlDtl = "SELECT *, GROUP_CONCAT(DTLDOK.KDFASDTL) as KDFASDTLDOK
 			    	FROM T_BC20DTL AS DTL
 			    	LEFT JOIN T_BC20FAS AS FAS ON DTL.KODE_TRADER = FAS.KODE_TRADER AND DTL.CAR = FAS.CAR AND DTL.SERIAL = FAS.SERIAL
@@ -204,7 +180,7 @@
 
 	    	if($cekPgt > 0)
 	    	{
-	    		$sql = "DELETE FROM T_BC20PGT WHERE CAR = ".$car;
+	    		$sql = "DELETE FROM T_BC20PGT WHERE CAR = '".$car."'";
 	    		delete($sql);
 	    	}
 
@@ -543,6 +519,7 @@
 				$CUKAITOTAL = $CEATOTAL + $CMETOTAL + $CTTOTAL;
 				// END OF BMTOTAL
 
+
 				/*PPN*/
 				$VAL = ($DCIFRP + $BMTOTAL + $BMTTOTAL + $CUKAITOTAL) * ($TRPPPN / 100) * ($FASPPN / 100);
 			    if($KDFASPPN == '1') { $PPNDITGPEM = $PPNDITGPEM + ROUND($VAL,2); }
@@ -693,6 +670,7 @@
 	    	// $pungutan .= "</table>";
 
 	    	// print_r($pungutan);exit();
+
 
 
 	    	/*INSERT INTO DB*/
